@@ -11,16 +11,18 @@
         android:layout_height="wrap_content"
         android:text="@string/nmedia"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.474"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.619" />
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="267dp"
-        android:layout_height="245dp"
+        android:layout_width="115dp"
+        android:layout_height="106dp"
         app:srcCompat="@mipmap/ic_launcher_my"
-        tools:layout_editor_absoluteX="88dp"
-        tools:layout_editor_absoluteY="107dp" />
+        tools:layout_editor_absoluteX="2dp"
+        tools:layout_editor_absoluteY="5dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
