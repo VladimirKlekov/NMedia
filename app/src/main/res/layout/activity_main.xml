@@ -22,7 +22,7 @@
         android:layout_width="115dp"
         android:layout_height="106dp"
         app:srcCompat="@mipmap/ic_launcher_my"
-        tools:layout_editor_absoluteX="2dp"
-        tools:layout_editor_absoluteY="5dp" />
+        tools:layout_editor_absoluteX="match_parent"
+        tools:layout_editor_absoluteY="match_parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
