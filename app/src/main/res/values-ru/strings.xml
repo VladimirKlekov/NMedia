@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">НМЕДИА</string>
-    <string name="nmedia">НМЕДИА</string>
+    <string name="textAuthor">Нетология. Университет интернет-профессий</string>
+    <string name="textTime">21 мая в 18:36</string>
 </resources>

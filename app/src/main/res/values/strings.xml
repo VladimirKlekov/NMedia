@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">NMedia</string>
-    <string name="nmedia">NMedia!</string>
+    <string name="textAuthor">Нетология. Университет интернет-профессий</string>
+    <string name="textTime">21 мая в 18:36</string>
+
+
 </resources>
