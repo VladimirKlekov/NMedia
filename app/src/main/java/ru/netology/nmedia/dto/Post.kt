@@ -1,5 +1,7 @@
 package ru.netology.nmedia.dto
 
+import java.text.DecimalFormat
+
 data class Post(
     val id: Long = 0,
     val author: String,
@@ -8,20 +10,35 @@ data class Post(
     val content: String,
     var liked: Boolean = false,
     var countLike: Int,
-    var countShare:Int=0
+    var countShare:Int,
+    var countEye:Int
 
     ) {
-    fun roundingCountLike():String{
-        var roundingCountLike:String=""
-        if(countLike<1000){
-          roundingCountLike= countLike.toString()
-        } else if(1000<=countLike || countLike<1000000){
-            roundingCountLike= (countLike/1000).toString().plus("k")
-        }else if(1000000<=countLike ){
-            roundingCountLike= (countLike/1000000).toString().plus("m")
-        }
 
-        return roundingCountLike
-    }
+
+    fun roundingCount(value:Int): String{
+        var roundingCount:Double=0.00
+        var result:String=""
+
+        if(value<1_000) {
+            roundingCount = value.toDouble()
+        }
+        else if(value>=1_000 && value<1_000_000){
+            roundingCount=(value.toDouble()/1_000)
+        }
+        else if(value>=1_000_000){
+            roundingCount= (value.toDouble()/1_000_000)
+        }
+        when(value) {
+        in 0 until 1000-> result = roundingCount.toInt().toString()
+            in 1_000 until 1_000_000-> result = DecimalFormat("#0.0").format(roundingCount).plus("k")
+            else -> result = DecimalFormat("#0.0").format(roundingCount).plus("m")
+        }
+        return result
 }
+
+
+    }
+
+
 

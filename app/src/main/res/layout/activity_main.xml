@@ -181,10 +181,10 @@
         tools:layout_editor_absoluteY="476dp" />
 
     <TextView
-        android:id="@+id/viewsTextView"
+        android:id="@+id/eyeTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="100000"
+        android:text=""
         android:layout_marginStart="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/barrierPostImage"
@@ -192,13 +192,13 @@
         tools:layout_editor_absoluteY="468dp" />
 
     <ImageButton
-        android:id="@+id/imageButton5"
+        android:id="@+id/eyeImageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/ic_baseline_visibility_24"
         android:background="@android:color/transparent"
         app:layout_constraintTop_toBottomOf="@+id/barrierPostImage"
-        app:layout_constraintEnd_toStartOf="@id/viewsTextView"
+        app:layout_constraintEnd_toStartOf="@id/eyeTextView"
         tools:layout_editor_absoluteX="247dp"
         tools:layout_editor_absoluteY="459dp" />
 

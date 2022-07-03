@@ -19,7 +19,10 @@ class MainActivity : AppCompatActivity() {
             authorAvatar = "",
             published = "21 мая в 18:36",
             content = "Привет учителям Нетологии!!! Я делаю свое первое приложение и пытюсь понять, что здесь и как. Пока все идет со скрипом, но я стараюсь. Как мне кажется, у меня немого получается. Если Вы хотите увидеть, как я постигаю азы пограммирования, то нажмите на ссылку ниже. Буду признателен за критику и Ваши советы.",
-            countLike = 1100,
+            countLike = 1_000_000,
+            countShare = 1_000,
+            countEye = 100
+
 
         )
 binding.root.setOnClickListener {
@@ -46,13 +49,16 @@ binding.root.setOnClickListener {
                 post.countLike--
 
             }
-            binding.countLikeTextView.text = post.roundingCountLike()
+            binding.countLikeTextView.text = post.roundingCount(post.countLike)
 
         }
         binding.shareImageButton.setOnClickListener{
             post.countShare++
-            binding.accountShareTextView.text = post.countShare.toString()
+            binding.accountShareTextView.text = post.roundingCount(post.countShare)
 
+        }
+        binding.eyeImageButton.setOnClickListener{
+            binding.eyeTextView.text=post.roundingCount(post.countEye)
         }
     }
 }
