@@ -2,9 +2,10 @@ package ru.netology.nmedia
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
 import ru.netology.nmedia.databinding.ActivityMainBinding
-import ru.netology.nmedia.dto.Post
-import java.util.Locale.filter
+import ru.netology.nmedia.viewmodel.PostViewModel
+import java.text.DecimalFormat
 
 class MainActivity : AppCompatActivity() {
 
@@ -14,54 +15,66 @@ class MainActivity : AppCompatActivity() {
 
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val post = Post(
-            author = "Нетология. Университет интернет-профессий",
-            authorAvatar = "",
-            published = "21 мая в 18:36",
-            content = "Привет учителям Нетологии!!! Я делаю свое первое приложение и пытюсь понять, что здесь и как. Пока все идет со скрипом, но я стараюсь. Как мне кажется, у меня немого получается. Если Вы хотите увидеть, как я постигаю азы пограммирования, то нажмите на ссылку ниже. Буду признателен за критику и Ваши советы.",
-            countLike = 1_099,
-            countShare = 1_100_000,
-            countEye = 100
 
+        val viewModel by viewModels<PostViewModel>()
+        viewModel.data.observe(this) { post ->
 
-        )
-binding.root.setOnClickListener {
-    println("Клик работает")
-}
-        binding.avatarImageView.setOnClickListener {
-            println("Клик аватара работает")
-        }
-        binding.textPost.text = post.content
-        binding.published.text = post.published
-        binding.author.text = post.author
-        binding.like.setOnClickListener {
-            post.liked = !post.liked
-            binding.like.setImageResource(
-                if (post.liked) {
+            with(binding) {
+                textPost.text = post.content
+                published.text = post.published
+                author.text = post.author
+                accountShareTextView.text = roundingCount(post.share)
+                eyeTextView.text = roundingCount(post.eye)
+                val likeImage = if (post.likedByMe) {
                     R.drawable.ic_liked
                 } else {
                     R.drawable.ic_like
                 }
-            )
-            if (post.liked) {
-                post.countLike++
-            } else {
-                post.countLike--
+                like?.setImageResource(likeImage)
+                countLikeTextView?.text = roundingCount(post.likes)
 
             }
-            binding.countLikeTextView.text = post.roundingCount(post.countLike)
 
         }
-        binding.shareImageButton.setOnClickListener{
-            post.countShare++
-            binding.accountShareTextView.text = post.roundingCount(post.countShare)
+        binding.like?.setOnClickListener {
+            viewModel.like()
+        }
+        binding.shareImageButton.setOnClickListener {
+            viewModel.share()
+        }
+       binding.eyeImageButton.setOnClickListener{
+           viewModel.eye()
+       }
 
-        }
-        binding.eyeImageButton.setOnClickListener{
-            binding.eyeTextView.text=post.roundingCount(post.countEye)
-        }
     }
+
+    fun roundingCount(value: Int): String {
+        var roundingCount: Double = 0.00
+        var result: String = ""
+
+        if (value < 1_000) {
+            roundingCount = value.toDouble()
+        } else if (value >= 1_000 && value < 1_000_000) {
+            roundingCount = (value.toDouble() / 1_000)
+        } else if (value >= 1_000_000) {
+            roundingCount = (value.toDouble() / 1_000_000)
+        }
+        when (value) {
+            in 0 until 1000 -> result = roundingCount.toInt().toString()
+            in 1_000 until 1_000_000 -> result =
+                DecimalFormat("#0.0").format(roundingCount).plus("k")
+            else -> result = DecimalFormat("#0.0").format(roundingCount).plus("m")
+        }
+        return result
+    }
+
+
 }
+
+
+//binding.eyeImageButton.setOnClickListener {
+//    binding.eyeTextView.text = post.roundingCount(post.countEye)
+//}
 
 
 
