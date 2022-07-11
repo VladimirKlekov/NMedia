@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="common_spacing_32dp">32dp</dimen>
+    <dimen name="common_spacing_16dp">16dp</dimen>
+    <dimen name="common_spacing_8dp">8dp</dimen>
+    <dimen name="common_spacing_4dp">4dp</dimen>
+    <dimen name="common_spacing_0dp">0dp</dimen>
+
+    <dimen name="posts_avatar_size">48dp</dimen>
+    <dimen name="button_size">24dp</dimen>
+</resources>
