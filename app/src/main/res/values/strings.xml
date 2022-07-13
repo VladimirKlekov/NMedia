@@ -3,6 +3,10 @@
     <string name="textAuthor">Нетология. Университет интернет-профессий</string>
     <string name="textTime">21 мая в 18:36</string>
     <string name="textPost">Привет учителям Нетологии!!! Пост пост пост.</string>
+    <string name="post_menu_remove">Remove</string>
+    <string name="post_menu_edit">Edit</string>
+    <string name="post_input_text">Post text</string>
+    <string name="empty_post_error">Post is blank</string>
 
 
 </resources>
