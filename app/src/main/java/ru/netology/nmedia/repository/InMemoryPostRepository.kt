@@ -9,7 +9,7 @@ class PostRepositoryInMemoryImpl : PostRepository {
 
     var posts = listOf(
         Post(
-            id = 1,
+            id = 6,
             author = "Нетология. Университет интернет-профессий",
             authorAvatar = "",
             published = "1 мая в 20:00",
@@ -20,7 +20,7 @@ class PostRepositoryInMemoryImpl : PostRepository {
             eye = 1
         ),
         Post(
-            id = 2,
+            id = 5,
             author = "Нетология. Университет интернет-профессий",
             authorAvatar = "",
             published = "21 мая в 18:36",
@@ -31,7 +31,7 @@ class PostRepositoryInMemoryImpl : PostRepository {
             eye = 1
         ),
         Post(
-            id = 3,
+            id = 4,
             author = "Нетология. Университет интернет-профессий",
             authorAvatar = "",
             published = "21 мая в 18:36",
@@ -42,7 +42,7 @@ class PostRepositoryInMemoryImpl : PostRepository {
             eye = 1
         ),
         Post(
-            id = 4,
+            id = 3,
             author = "Нетология. Университет интернет-профессий",
             authorAvatar = "",
             published = "21 мая в 18:36",
@@ -53,7 +53,7 @@ class PostRepositoryInMemoryImpl : PostRepository {
             eye = 1
         ),
         Post(
-            id = 5,
+            id = 2,
             author = "Нетология. Университет интернет-профессий",
             authorAvatar = "",
             published = "21 мая в 18:36",
@@ -64,7 +64,7 @@ class PostRepositoryInMemoryImpl : PostRepository {
             eye = 1
         ),
         Post(
-            id = 6,
+            id = 1,
             author = "Нетология. Университет интернет-профессий",
             authorAvatar = "",
             published = "21 мая в 18:36",
