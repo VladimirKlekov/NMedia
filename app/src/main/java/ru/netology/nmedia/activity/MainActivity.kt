@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import ru.netology.nmedia.R
 import ru.netology.nmedia.adapter.PostAdapter
 import ru.netology.nmedia.adapter.PostEventListener
@@ -54,8 +56,6 @@ class MainActivity : AppCompatActivity() {
                 override fun onEdit(post: Post) {
                     viewModel.edit(post)
 
-                    //binding.supportEdit.visibility = "visible"
-                    //binding.supportEdit.text=???
                 }
 
                 override fun onRemove(post: Post) {
@@ -85,6 +85,8 @@ class MainActivity : AppCompatActivity() {
         )
         //подписка на переменную. что бы начало работать редактирование поста
         viewModel.edited.observe(this) { edited ->
+            binding.group.isVisible = edited.id != 0L
+            binding.supportEdit.hint = edited.content
             if (edited.id == 0L) {
                 return@observe
             }
@@ -92,7 +94,13 @@ class MainActivity : AppCompatActivity() {
             binding.content.requestFocus()
         }
 
-
+        binding.cancelEdit.setOnClickListener {
+            binding.group.isInvisible = true
+            AndroidUtils.hideKeyboard(binding.cancelEdit)
+            viewModel.save()
+            binding.content.clearFocus()
+            binding.content.setText("")
+        }
         binding.save.setOnClickListener {
             if (binding.content.text.isNullOrBlank()) {
                 Toast.makeText(it.context, getString(R.string.empty_post_error), Toast.LENGTH_SHORT)
@@ -108,11 +116,20 @@ class MainActivity : AppCompatActivity() {
         }
         binding.list.adapter = adapter
         viewModel.data.observe(this) { posts ->
-            adapter.submitList(posts)
+
+            //с обновлением прокрутки
+            val newPost = posts.size > adapter.currentList.size
+            adapter.submitList(posts) {
+                if (newPost) {
+                    binding.list.smoothScrollToPosition(0)
+
+
+//            adapter.submitList(posts)
+                }
+            }
+
         }
     }
-
-
 }
 
 //val adapter= PostAdapter{

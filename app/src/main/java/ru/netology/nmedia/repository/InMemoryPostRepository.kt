@@ -83,9 +83,7 @@ class PostRepositoryInMemoryImpl : PostRepository {
     }
 
     override fun removeById(id: Long) {
-        posts = posts.filter {
-            it.id != id
-        }
+        posts = posts.filter {it.id != id}
         data.value = posts
     }
 
@@ -94,21 +92,23 @@ class PostRepositoryInMemoryImpl : PostRepository {
             listOf(
                 post.copy(
                     id = posts.firstOrNull()?.id?.plus(1) ?: 1L
-                                  )
+                )
             ) + posts
+
         } else {
             posts.map {
-                if (it.id == post.id)  it else it.copy(content = post.content)
+                if (it.id != post.id) it else it.copy(content = post.content)
             }
 
         }
 
+        posts = data.value.orEmpty()
     }
 
     private val data = MutableLiveData(posts)
 
     //возврщать подписку на пост
-    override fun get(): LiveData<List<Post>> = data
+    override fun getAll(): LiveData<List<Post>> = data
 
     override fun shareById(id: Long) {
         posts = posts.map {

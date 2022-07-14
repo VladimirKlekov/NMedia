@@ -43,34 +43,73 @@
         android:id="@+id/save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@color/cardview_light_background"
+        android:contentDescription=""
         android:padding="@dimen/common_spacing_8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/content"
-        app:srcCompat="@drawable/ic_baseline_send_24"
-        android:contentDescription="" />
+        app:srcCompat="@drawable/ic_baseline_send_24" />
+
+    <EditText
+        android:id="@+id/textEditMassage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/cardview_light_background"
+        android:padding="@dimen/common_spacing_8dp"
+        android:text="Edit Message"
+        android:textColor="#0000ff"
+        android:textStyle="bold|italic"
+        app:layout_constraintBottom_toTopOf="@+id/supportEdit"
+        app:layout_constraintEnd_toStartOf="@+id/cancelEdit"
+        app:layout_constraintStart_toEndOf="@+id/pencil" />
 
 
     <EditText
         android:id="@+id/supportEdit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/cardview_light_background"
+        app:layout_constraintBottom_toTopOf="@+id/barrier_bottom"
+        app:layout_constraintEnd_toStartOf="@+id/cancelEdit"
+        app:layout_constraintStart_toEndOf="@+id/pencil" />
+
+    <ImageView
+        android:id="@+id/pencil"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@color/cardview_light_background"
+        android:padding="@dimen/common_spacing_8dp"
         app:layout_constraintBottom_toTopOf="@+id/content"
         app:layout_constraintStart_toStartOf="parent"
-        android:visibility="invisible"
-        android:text=""
-        android:importantForAutofill="no"
-        android:inputType="textMultiLine"/>
+        app:layout_constraintTop_toTopOf="@+id/textEditMassage"
+        app:srcCompat="@drawable/ic_pencil_create_24" />
 
-<!--    <androidx.constraintlayout.widget.Group-->
-<!--        android:id="@+id/group"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="@+id/content"-->
-<!--        android:visibility="invisible"-->
-<!--        app:constraint_referenced_ids="content,supportEdit" />-->
+    <ImageView
+        android:id="@+id/cancelEdit"
 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/cardview_light_background"
+        android:contentDescription=""
+        android:padding="@dimen/common_spacing_8dp"
+        app:layout_constraintBottom_toTopOf="@+id/content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textEditMassage"
+        app:srcCompat="@drawable/ic_close_24" />
+
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:constraint_referenced_ids="supportEdit,pencil, cancelEdit, textEditMassage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/content"
+
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
