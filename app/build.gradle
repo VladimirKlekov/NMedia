@@ -40,19 +40,20 @@ dependencies {
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4.13.2'
-    def recyclerview_version="1.1.0"
+
     def mdc_version = "1.6.1"
     implementation"com.google.android.material:material:$mdc_version"
+    def recyclerview_version="1.2.1"
      implementation "androidx.recyclerview:recyclerview:$recyclerview_version"
-    def activity_version= "1.4.0"
-    //def arch_version = "2.1.0"
-    def lifecycle_version ="2.4.1"
     //ViewModel
+    def activity_version= "1.5.0"
     implementation "androidx.activity:activity-ktx:$activity_version"
     //LiveData
+    def lifecycle_version ="2.4.1"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     //optional - test helpers for LiveData
-    //testImplementation"androidx.arch.core:core-testing:$arch_version"
+    def arch_version = "2.1.0"
+    testImplementation"androidx.arch.core:core-testing:$arch_version"
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 }

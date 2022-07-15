@@ -5,7 +5,8 @@
     <dimen name="common_spacing_8dp">8dp</dimen>
     <dimen name="common_spacing_4dp">4dp</dimen>
     <dimen name="common_spacing_0dp">0dp</dimen>
-
     <dimen name="posts_avatar_size">48dp</dimen>
     <dimen name="button_size">24dp</dimen>
+
+    <dimen name="icon_button_min_size">4dp</dimen>
 </resources>

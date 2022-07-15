@@ -55,17 +55,17 @@ class PostViewHolder(
             author.text = post.author
             published.text = post.published
             content.text = post.content
-            countLikeTextView.text = roundingCount(post.likes)
-            countShare.text = roundingCount(post.share)
+            like.text = roundingCount(post.likes)
+            share.text = roundingCount(post.share)
             countEye.text = roundingCount(post.eye)
-
-            like.setImageResource(
-                if (post.likedByMe) {
-                    R.drawable.ic_liked
-                } else {
-                    R.drawable.ic_like
-                }
-            )
+            like.isChecked = post.likedByMe
+//            like.setImageResource(
+//                if (post.likedByMe) {
+//                    R.drawable.ic_liked
+//                } else {
+//                    R.drawable.ic_like
+//                }
+//            )
             like.setOnClickListener {
                 listener.onLike(post)
             }

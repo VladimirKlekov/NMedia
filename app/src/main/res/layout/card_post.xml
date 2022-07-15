@@ -43,15 +43,17 @@
         app:layout_constraintTop_toBottomOf="@id/author"
         tools:text="@sample/post.json/data/published" />
 
-    <ImageButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/menuButton"
-        android:layout_width="@dimen/button_size"
-        android:layout_height="@dimen/button_size"
-        android:layout_centerInParent="true"
-        android:background="@android:color/transparent"
+        style="@style/Widget.AppTheme.MenuChekBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checkable="true"
+        android:contentDescription=""
+        app:icon="@drawable/ic_baseline_more_vert_24"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_baseline_more_vert_24" />
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrierMenuButton"
@@ -82,42 +84,31 @@
         app:layout_constraintTop_toBottomOf="@id/barrierAuthorButton" />
 
 
-    <ImageButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/like"
+        style="@style/Widget.AppTheme.LikeChekBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
+        android:checkable="true"
+        android:contentDescription="Like"
+        app:icon="@drawable/ic_like_res"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/content"
-        app:srcCompat="@drawable/ic_like" />
+        tools:checked="true"
+        tools:text="1" />
 
-    <TextView
-        android:id="@+id/countLikeTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text=""
-        app:layout_constraintStart_toEndOf="@id/like"
-        app:layout_constraintTop_toBottomOf="@+id/content" />
-
-    <ImageButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/share"
+        style="@style/Widget.AppTheme.ShareChekBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:background="@android:color/transparent"
-        app:layout_constraintStart_toEndOf="@id/countLikeTextView"
+        android:checkable="true"
+        android:contentDescription="Share"
+        app:icon="@drawable/ic_baseline_share_24"
+        app:layout_constraintStart_toEndOf="@id/like"
         app:layout_constraintTop_toBottomOf="@+id/content"
-        app:srcCompat="@drawable/ic_baseline_share_24" />
-
-    <TextView
-        android:id="@+id/countShare"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:background="@android:color/transparent"
-        android:text=""
-        app:layout_constraintStart_toEndOf="@id/share"
-        app:layout_constraintTop_toBottomOf="@+id/content" />
+        tools:checked="true"
+        tools:text="1" />
 
     <TextView
         android:id="@+id/countEye"
