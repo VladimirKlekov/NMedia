@@ -72,16 +72,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-
-//            onLikeListener = {
-//                viewModel.likeById(it.id)
-////            },
-//            onShareListener = {
-//                viewModel.shareById(it.id)
-//            },
-//            onRemoveListener = {
-//                viewModel.removeById(it.id)
-//            }
         )
         //подписка на переменную. что бы начало работать редактирование поста
         viewModel.edited.observe(this) { edited ->
@@ -122,9 +112,6 @@ class MainActivity : AppCompatActivity() {
             adapter.submitList(posts) {
                 if (newPost) {
                     binding.list.smoothScrollToPosition(0)
-
-
-//            adapter.submitList(posts)
                 }
             }
 
