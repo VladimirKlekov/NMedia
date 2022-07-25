@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.repository.PostRepository
 import ru.netology.nmedia.repository.PostRepositoryInMemoryImpl
+import ru.netology.nmedia.repository.PostRepositorySharedPrefsImpl
 
 //заглушка
 val empty = Post(
@@ -23,7 +24,7 @@ val empty = Post(
 )
 
 class PostViewModel (application: Application): AndroidViewModel(application) {
-    private val repository: PostRepository = PostRepositoryInMemoryImpl()
+    private val repository: PostRepository = PostRepositorySharedPrefsImpl(application)
     val data = repository.getAll()
     //Хранилище для поста, который будет создан
     val edited = MutableLiveData(empty)
