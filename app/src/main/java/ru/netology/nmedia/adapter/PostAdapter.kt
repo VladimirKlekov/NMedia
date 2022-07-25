@@ -2,6 +2,7 @@ package ru.netology.nmedia.adapter
 
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.recyclerview.widget.ListAdapter
@@ -67,6 +68,12 @@ class PostViewHolder(
 //                    R.drawable.ic_like
 //                }
 //            )
+
+            if (post.video == null) {
+                binding.videoGroup.visibility = View.GONE
+            } else {
+                binding.videoGroup.visibility = View.VISIBLE
+            }
             like.setOnClickListener {
                 listener.onLike(post)
             }
