@@ -7,6 +7,8 @@
     <string name="post_menu_edit">Edit</string>
     <string name="post_input_text">Post text</string>
     <string name="empty_post_error">Post is blank</string>
+    <string name="vide_fopr_post">vide fopr post</string>
+    <string name="play_video">play video</string>
 
 
 </resources>

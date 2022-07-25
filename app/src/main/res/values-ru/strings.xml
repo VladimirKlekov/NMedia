@@ -8,4 +8,6 @@
     <string name="post_menu_edit">Редактировать</string>
     <string name="post_input_text">Текст поста</string>
     <string name="empty_post_error">Пустой пост</string>
+    <string name="vide_fopr_post">Видео для поста</string>
+    <string name="play_video">Воспроизведение видео</string>
 </resources>
