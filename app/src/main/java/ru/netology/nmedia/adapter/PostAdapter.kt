@@ -80,6 +80,12 @@ class PostViewHolder(
             share.setOnClickListener {
                 listener.onShare(post)
             }
+            play.setOnClickListener {
+                listener.onVideo(post)
+            }
+            video.setOnClickListener {
+                listener.onVideo(post)
+            }
             menuButton.setOnClickListener {
                 PopupMenu(it.context, it).apply {
                     inflate(R.menu.post_menu)//пункты меню

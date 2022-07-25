@@ -84,6 +84,15 @@
         app:layout_constraintTop_toBottomOf="@id/barrierAuthorButton" />
 
 
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/endVideoPost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="top"
+        app:layout_constraintTop_toBottomOf="@id/video"
+        app:constraint_referenced_ids="like,share,countEye,eyeButton"
+        />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/like"
         style="@style/Widget.AppTheme.LikeChekBox"
@@ -93,7 +102,7 @@
         android:contentDescription="Like"
         app:icon="@drawable/ic_like_res"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/content"
+        app:layout_constraintTop_toBottomOf="@+id/endVideoPost"
         tools:checked="true"
         tools:text="1" />
 
@@ -106,7 +115,7 @@
         android:contentDescription="Share"
         app:icon="@drawable/ic_baseline_share_24"
         app:layout_constraintStart_toEndOf="@id/like"
-        app:layout_constraintTop_toBottomOf="@+id/content"
+        app:layout_constraintTop_toBottomOf="@+id/endVideoPost"
         tools:checked="true"
         tools:text="1" />
 
@@ -117,7 +126,7 @@
         android:layout_marginStart="16dp"
         android:text=""
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/content" />
+        app:layout_constraintTop_toBottomOf="@+id/endVideoPost" />
 
     <ImageButton
         android:id="@+id/eyeButton"
@@ -125,12 +134,13 @@
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         app:layout_constraintEnd_toStartOf="@id/countEye"
-        app:layout_constraintTop_toBottomOf="@+id/content"
+        app:layout_constraintTop_toBottomOf="@+id/endVideoPost"
         app:srcCompat="@drawable/ic_baseline_visibility_24" />
+
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/videoGroup"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:constraint_referenced_ids="video, play" />
 
@@ -138,12 +148,11 @@
         android:id="@+id/video"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/common_spacing_8dp"
-        android:adjustViewBounds="true"
+        android:background="@drawable/avatar_net1"
         android:contentDescription="@string/vide_fopr_post"
-        app:layout_constraintEnd_toEndOf="@id/videoGroup"
-        app:layout_constraintStart_toStartOf="@id/videoGroup"
-        app:layout_constraintTop_toBottomOf="@+id/content" />
+        app:layout_constraintTop_toBottomOf="@+id/content"
+        />
+
 
     <ImageButton
         android:id="@+id/play"
@@ -156,7 +165,6 @@
         app:layout_constraintEnd_toEndOf="@id/video"
         app:layout_constraintStart_toStartOf="@id/video"
         app:layout_constraintTop_toTopOf="@id/video" />
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -75,16 +75,14 @@ class PostRepositoryInMemoryImpl : PostRepository {
             share = 1,
             eye = 1
         )
-
     )
-
 
     override fun eye() {
 //       TODO
     }
 
     override fun removeById(id: Long) {
-        posts = posts.filter {it.id != id}
+        posts = posts.filter { it.id != id }
         data.value = posts
     }
 
@@ -100,9 +98,7 @@ class PostRepositoryInMemoryImpl : PostRepository {
             posts.map {
                 if (it.id != post.id) it else it.copy(content = post.content)
             }
-
         }
-
         posts = data.value.orEmpty()
     }
 
@@ -117,7 +113,6 @@ class PostRepositoryInMemoryImpl : PostRepository {
                 share = it.share + 1
             )
         }
-
         data.value = posts
     }
 

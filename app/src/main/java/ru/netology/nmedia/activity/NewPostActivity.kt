@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.Toast
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.ActivityNewPostBinding
+import ru.netology.nmedia.util.AndroidUtils
 
 
 class NewPostActivity : AppCompatActivity() {
@@ -19,6 +20,10 @@ class NewPostActivity : AppCompatActivity() {
         val contents = intent.getStringExtra(Intent.EXTRA_TEXT)
 
         binding.content.setText(contents)
+        binding.supportEdit.setText(contents)
+        binding.closeEditidButton.setOnClickListener {
+            finish()
+        }
 
         binding.save.setOnClickListener {
             if (binding.content.text.isNullOrBlank()) {

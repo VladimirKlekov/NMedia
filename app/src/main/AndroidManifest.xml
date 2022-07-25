@@ -13,8 +13,8 @@
         <activity
             android:name=".activity.NewPostActivity"
             android:exported="true"
-            android:icon="@drawable/ic_baseline_share_24"></activity>
-
+            android:icon="@drawable/ic_baseline_share_24"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activity.MainActivity"
             android:exported="true">
