@@ -11,7 +11,8 @@ data class Post(
 
     val likes: Long,
     val share:Long,
-    var eye:Long
+    var eye:Long,
+    val video: String? = null
 
     )
 

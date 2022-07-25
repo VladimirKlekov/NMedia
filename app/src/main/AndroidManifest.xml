@@ -9,6 +9,12 @@
         android:roundIcon="@mipmap/ic_launcher_my_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.NMedia">
+
+        <activity
+            android:name=".activity.NewPostActivity"
+            android:exported="true"
+            android:icon="@drawable/ic_baseline_share_24"></activity>
+
         <activity
             android:name=".activity.MainActivity"
             android:exported="true">
