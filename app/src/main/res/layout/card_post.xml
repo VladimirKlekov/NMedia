@@ -141,7 +141,6 @@
         android:layout_marginTop="@dimen/common_spacing_8dp"
         android:adjustViewBounds="true"
         android:contentDescription="@string/vide_fopr_post"
-        android:src=""
         app:layout_constraintEnd_toEndOf="@id/video_group"
         app:layout_constraintStart_toStartOf="@id/video_group"
         app:layout_constraintTop_toBottomOf="@+id/content" />
@@ -152,7 +151,7 @@
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:contentDescription="@string/play_video"
-        android:src=""
+        android:src="@drawable/ic_play_video_24"
         app:layout_constraintBottom_toBottomOf="@id/video"
         app:layout_constraintEnd_toEndOf="@id/video"
         app:layout_constraintStart_toStartOf="@id/video"
