@@ -8,15 +8,14 @@
 
     <EditText
         android:id="@+id/content"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:hint="@string/post_input_text"
         android:importantForAutofill="no"
         android:inputType="textMultiLine"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/save"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:padding="@dimen/common_spacing_4dp"
+        tools:ignore="MissingConstraints" />
 
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottomAppBar"
@@ -29,8 +28,10 @@
         android:id="@+id/save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="@dimen/common_spacing_8dp"
         android:contentDescription="post_input_text"
-        app:layout_anchor="@id/bottomAppBar"
+        app:layout_anchor="@+id/bottomAppBar"
         app:srcCompat="@drawable/ic_add_24" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

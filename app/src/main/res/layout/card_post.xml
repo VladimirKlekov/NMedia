@@ -129,7 +129,7 @@
         app:srcCompat="@drawable/ic_baseline_visibility_24" />
 
     <androidx.constraintlayout.widget.Group
-        android:id="@+id/video_group"
+        android:id="@+id/videoGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:constraint_referenced_ids="video, play" />
@@ -141,8 +141,8 @@
         android:layout_marginTop="@dimen/common_spacing_8dp"
         android:adjustViewBounds="true"
         android:contentDescription="@string/vide_fopr_post"
-        app:layout_constraintEnd_toEndOf="@id/video_group"
-        app:layout_constraintStart_toStartOf="@id/video_group"
+        app:layout_constraintEnd_toEndOf="@id/videoGroup"
+        app:layout_constraintStart_toStartOf="@id/videoGroup"
         app:layout_constraintTop_toBottomOf="@+id/content" />
 
     <ImageButton
@@ -156,5 +156,7 @@
         app:layout_constraintEnd_toEndOf="@id/video"
         app:layout_constraintStart_toStartOf="@id/video"
         app:layout_constraintTop_toTopOf="@id/video" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
