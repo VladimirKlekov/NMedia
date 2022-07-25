@@ -1,12 +1,15 @@
 package ru.netology.nmedia.activity
 
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.result.launch
 import androidx.activity.viewModels
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import ru.netology.nmedia.R
 import ru.netology.nmedia.adapter.PostAdapter
 import ru.netology.nmedia.adapter.PostEventListener
@@ -18,10 +21,31 @@ import ru.netology.nmedia.viewmodel.PostViewModel
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        setContentView(R.layout.activity_main)
+        //setContentView(R.layout.activity_main)
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
+        run {
+            // для записи нужен Editor
+            val preferences = getPreferences(Context.MODE_PRIVATE)
+            preferences.edit().apply(){
+                putString("key", "value")
+                commit() //commit - синхронно, aplly -асинхронно
+            }
+        }
+
+
+        run {
+            // для записи нужен Editor
+            getPreferences(Context.MODE_PRIVATE)
+                .getString("key", "no value")?.let{
+                    Snackbar.make(binding.root, it, BaseTransientBottomBar.LENGTH_INDEFINITE)
+                        .show()
+                }
+            }
+
+
 
         val viewModel: PostViewModel by viewModels()
 
@@ -37,9 +61,6 @@ class MainActivity : AppCompatActivity() {
                 text?.let {
                     viewModel.editContent(it)
                     viewModel.save()
-
-
-
                 }
             }
 

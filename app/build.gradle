@@ -38,6 +38,7 @@ def recyclerview_version = "1.2.1"
 def gson_version = "2.9.0"
 
 dependencies {
+
     implementation "com.google.code.gson:gson:$gson_version"
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.4.2'
