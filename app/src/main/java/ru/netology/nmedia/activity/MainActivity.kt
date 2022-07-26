@@ -21,7 +21,7 @@ import ru.netology.nmedia.viewmodel.PostViewModel
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //setContentView(R.layout.activity_main)
+//        setContentView(R.layout.activity_main)
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
 
 
         run {
-            // для записи нужен Editor
+
             getPreferences(Context.MODE_PRIVATE)
                 .getString("key", "no value")?.let{
                     Snackbar.make(binding.root, it, BaseTransientBottomBar.LENGTH_INDEFINITE)

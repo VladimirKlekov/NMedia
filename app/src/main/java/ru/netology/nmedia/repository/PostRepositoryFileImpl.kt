@@ -7,28 +7,29 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import ru.netology.nmedia.dto.Post
 
-class PostRepositoryFileImpl(private val context: Context): PostRepository {
+class PostRepositoryFileImpl(private val context: Context) : PostRepository {
     private val gson = Gson()
-    private val prefs = context.getSharedPreferences("pero", Context.MODE_PRIVATE)
     private val type = TypeToken.getParameterized(List::class.java, Post::class.java).type
     private val filename = "posts.json"
-    private var nextId = 1L
     private var posts = emptyList<Post>()
     private val data = MutableLiveData(posts)
 
+
+
     init {
         val file = context.filesDir.resolve(filename)
-        if(file.exists()){
+        if (file.exists()) {
             //если файл есть - читаем
             context.openFileInput(filename).bufferedReader().use {
                 posts = gson.fromJson(it, type)
                 data.value = posts
             }
-        }else
-            //если нет - записываем пустой массив
+        } else
+        //если нет - записываем пустой массив
             sync()
     }
-    private fun sync(){
+
+    private fun sync() {
         context.openFileOutput(filename, Context.MODE_PRIVATE).bufferedWriter().use {
             it.write(gson.toJson(posts))
         }

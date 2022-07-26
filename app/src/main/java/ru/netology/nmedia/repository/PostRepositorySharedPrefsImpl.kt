@@ -9,7 +9,7 @@ import ru.netology.nmedia.dto.Post
 
 class PostRepositorySharedPrefsImpl(context: Context) : PostRepository {
     private val gson = Gson()
-    private val prefs = context.getSharedPreferences("pero", Context.MODE_PRIVATE)
+    private val prefs = context.getSharedPreferences("repo", Context.MODE_PRIVATE)
     private val type = TypeToken.getParameterized(List::class.java, Post::class.java).type
     private val key = "posts"
     private var nextId = 1L
@@ -17,7 +17,7 @@ class PostRepositorySharedPrefsImpl(context: Context) : PostRepository {
     private val data = MutableLiveData(posts)
 
     init {
-        prefs.getString(key, null)?.let {
+        prefs.getString(key,  null)?.let {
             posts = gson.fromJson(it, type)
             data.value = posts
         }
@@ -60,9 +60,13 @@ class PostRepositorySharedPrefsImpl(context: Context) : PostRepository {
         data.value = if (post.id == 0L) {
             listOf(
                 post.copy(
-                    id = posts.firstOrNull()?.id?.plus(1) ?: 1L
+                    id = nextId++,
+                    author = "Me",
+                    likedByMe = false,
+                    published = "now"
                 )
             ) + posts
+
 
         } else {
             posts.map {
@@ -70,7 +74,7 @@ class PostRepositorySharedPrefsImpl(context: Context) : PostRepository {
             }
         }
         posts = data.value.orEmpty()
-        sync()
+
     }
 
     private fun sync() {
