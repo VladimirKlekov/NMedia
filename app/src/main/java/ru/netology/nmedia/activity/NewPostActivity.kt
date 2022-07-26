@@ -6,10 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.core.view.isInvisible
-import androidx.core.view.isVisible
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.ActivityNewPostBinding
-import ru.netology.nmedia.util.AndroidUtils
 
 
 class NewPostActivity : AppCompatActivity() {
@@ -30,7 +28,6 @@ class NewPostActivity : AppCompatActivity() {
         }
 
         binding.save.setOnClickListener {
-
             if (binding.content.text.isNullOrBlank()) {
                 Toast.makeText(
                     this,

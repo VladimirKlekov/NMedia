@@ -11,7 +11,7 @@ import ru.netology.nmedia.repository.PostRepositorySharedPrefsImpl
 
 //заглушка
 val empty = Post(
-    1,
+    0,
     "authorTest",
     "",
     "",
