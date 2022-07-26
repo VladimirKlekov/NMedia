@@ -8,12 +8,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.result.launch
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import ru.netology.nmedia.R
 import ru.netology.nmedia.adapter.PostAdapter
 import ru.netology.nmedia.adapter.PostEventListener
 import ru.netology.nmedia.databinding.ActivityMainBinding
+import ru.netology.nmedia.databinding.ActivityNewPostBinding
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.viewmodel.PostViewModel
 
@@ -37,8 +39,7 @@ class MainActivity : AppCompatActivity() {
 //
 //
 //        run {
-//
-//            getPreferences(Context.MODE_PRIVATE)
+////            getPreferences(Context.MODE_PRIVATE)
 //                .getString("key", "no value")?.let{
 //                    Snackbar.make(binding.root, it, BaseTransientBottomBar.LENGTH_INDEFINITE)
 //                        .show()
@@ -102,7 +103,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.addPost.setOnClickListener {
-            newPostContract.launch()
+                newPostContract.launch()
         }
     }
 }

@@ -5,6 +5,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.ActivityNewPostBinding
 import ru.netology.nmedia.util.AndroidUtils
@@ -18,14 +20,17 @@ class NewPostActivity : AppCompatActivity() {
         binding.content.requestFocus()
 
         val contents = intent.getStringExtra(Intent.EXTRA_TEXT)
-
         binding.content.setText(contents)
-        binding.supportEdit.setText(contents)
+        if (contents == null) {
+            binding.supportGroup.isInvisible=true
+        }
+
         binding.closeEditidButton.setOnClickListener {
             finish()
         }
 
         binding.save.setOnClickListener {
+
             if (binding.content.text.isNullOrBlank()) {
                 Toast.makeText(
                     this,
