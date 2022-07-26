@@ -19,7 +19,8 @@ class PostRepositoryInMemoryImpl : PostRepository {
             share = 1,
             eye = 1,
             video = "https://www.youtube.com/watch?v=5B__Rsk2Kd0",
-        ),
+        )
+        ,
         Post(
             id = 5,
             author = "Нетология. Университет интернет-профессий",

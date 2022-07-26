@@ -74,7 +74,7 @@ class PostRepositorySharedPrefsImpl(context: Context) : PostRepository {
             }
         }
         posts = data.value.orEmpty()
-
+        sync()
     }
 
     private fun sync() {

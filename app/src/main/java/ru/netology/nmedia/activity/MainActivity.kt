@@ -26,24 +26,24 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        run {
-            // для записи нужен Editor
-            val preferences = getPreferences(Context.MODE_PRIVATE)
-            preferences.edit().apply(){
-                putString("key", "value")
-                commit() //commit - синхронно, aplly -асинхронно
-            }
-        }
-
-
-        run {
-
-            getPreferences(Context.MODE_PRIVATE)
-                .getString("key", "no value")?.let{
-                    Snackbar.make(binding.root, it, BaseTransientBottomBar.LENGTH_INDEFINITE)
-                        .show()
-                }
-            }
+//        run {
+//            // для записи нужен Editor
+//            val preferences = getPreferences(Context.MODE_PRIVATE)
+//            preferences.edit().apply(){
+//                putString("key", "value")
+//                commit() //commit - синхронно, aplly -асинхронно
+//            }
+//        }
+//
+//
+//        run {
+//
+//            getPreferences(Context.MODE_PRIVATE)
+//                .getString("key", "no value")?.let{
+//                    Snackbar.make(binding.root, it, BaseTransientBottomBar.LENGTH_INDEFINITE)
+//                        .show()
+//                }
+//            }
 
 
 
