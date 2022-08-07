@@ -1,11 +1,22 @@
 package ru.netology.nmedia.activity
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import ru.netology.nmedia.R
+import ru.netology.nmedia.activity.NewPostFragment.Companion.textArg
+import ru.netology.nmedia.adapter.PostEventListener
+import ru.netology.nmedia.adapter.PostViewHolder
+import ru.netology.nmedia.databinding.FragmentPostBinding
+import ru.netology.nmedia.dto.Post
+import ru.netology.nmedia.viewmodel.PostViewModel
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -22,6 +33,12 @@ class PostFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private val viewModel: PostViewModel by viewModels(
+        ownerProducer = ::requireParentFragment
+    )
+
+    val args by navArgs<PostFragmentArgs>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -33,9 +50,54 @@ class PostFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_post, container, false)
+    ): View {
+
+        val binding = FragmentPostBinding.inflate(inflater, container, false)
+        val viewHolder = PostViewHolder(binding.cardPost, object : PostEventListener {
+
+            override fun onEdit(post: Post) {
+                viewModel.edit(post)
+                findNavController().navigate(
+                    R.id.action_feedFragment_to_newPostFragment,
+                    Bundle().apply {
+                        textArg = post.content
+                    }
+                )
+//
+            }
+
+            override fun onRemove(post: Post) {
+                viewModel.removeById(post.id)
+            }
+
+            override fun onLike(post: Post) {
+                viewModel.likeById(post.id)
+            }
+
+            override fun onShare(post: Post) {
+                viewModel.shareById(post.id)
+            }
+
+            override fun onVideo(post: Post) {
+                val intentVideo = Intent(Intent.ACTION_VIEW, Uri.parse(post.video))
+                startActivity(intentVideo)
+            }
+
+        })
+        //подписываемся на обновление списка
+        viewModel.data.observe(viewLifecycleOwner){posts->
+            //ищем пост, который нужно отобразить
+
+            val post = posts.find { it.id == args.postId}?.run {
+                findNavController().navigateUp()
+                return@observe
+            }
+            viewHolder.bind(post)
+        }
+        binding.cardPost
+
+
+        return binding.root
     }
 
     companion object {

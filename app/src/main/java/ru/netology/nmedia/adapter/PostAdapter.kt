@@ -22,6 +22,7 @@ interface PostEventListener {
     fun onLike(post: Post)
     fun onShare(post: Post)
     fun onVideo(post: Post)
+    fun onPost(post: Post)
 }
 
 class PostAdapter(
@@ -83,6 +84,8 @@ class PostViewHolder(
             }
             root.setOnClickListener {
                 println("root clicked")
+                listener.onPost(post)
+
 
             }
             menuButton.setOnClickListener {

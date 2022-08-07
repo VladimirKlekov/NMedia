@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.launch
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -38,7 +37,7 @@ class FeedFragment : Fragment() {
     ): View? {
 //____________________________________________________________________________________________//
 
-        //val binding: FragmentFeedBinding = FragmentFeedBinding.inflate(
+
         val binding: FragmentFeedBinding = FragmentFeedBinding.inflate(
             inflater,
             container,
@@ -76,6 +75,11 @@ class FeedFragment : Fragment() {
                     startActivity(intentVideo)
                 }
 
+                override fun onPost(post: Post) {
+                    val action = FeedFragmentDirections.actionFeedFragmentToPostFragment(postId)
+                    findNavController().navigate(action)
+                }
+
             }
         )
 //____________________________________________________________________________________________//
@@ -90,11 +94,17 @@ class FeedFragment : Fragment() {
         }
 //____________________________________________________________________________________________//
         binding.addPost.setOnClickListener {
-           findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
+            //val args = NewPostFragmentArgs.Builder().setContent("111").build()
+            val action = FeedFragmentDirections.actionFeedFragmentToNewPostFragment("111")
+            findNavController().navigate(action)
 
+//           findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
 //            newPostContract.launch()
         }
+        //____________________________________________________________________________________________//
 
+//        parentFragmentManager.beginTransaction()
+//            .replace(R.id.nav_main, PostFragment.newInstance("1", "2")).commit()
 
 //____________________________________________________________________________________________//
         return binding.root

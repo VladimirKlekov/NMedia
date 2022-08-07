@@ -1,10 +1,8 @@
 package ru.netology.nmedia.activity
 
 
-import android.app.Activity
-import android.content.Intent
+
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +18,12 @@ import kotlin.reflect.KProperty
 
 
 class NewPostFragment : Fragment() {
+
+    companion object {
+        var Bundle.textArg: String? by StringArg
+    }
+
+    //val args by navArgs<NewPostFragmentArgs>()
     //____________________________________________________________________________________________//
     //представляем ViewModel нескольким активити
     private val viewModel: PostViewModel by viewModels(
@@ -68,11 +72,6 @@ class NewPostFragment : Fragment() {
         }
 
         return binding.root
-    }
-
-
-    companion object {
-        var Bundle.textArg: String? by StringArg
     }
 
     object StringArg : ReadWriteProperty<Bundle, String?> {
