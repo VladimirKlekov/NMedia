@@ -1,7 +1,10 @@
 package ru.netology.nmedia.activity
 
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,48 +37,41 @@ class NewPostFragment : Fragment() {
             container,
             false
         )
-//________________________________________________________________________________________________//
+// делаю как в лекции
+        binding.content.requestFocus()
+
         //Обращаемся к свойсту аргумента и читаем текст.
         arguments?.textArg?.let {
             binding.content.setText(it)
         }
-//________________________________________________________________________________________________//
 
-        binding.content.requestFocus()
-//________________________________________________________________________________________________//
         //скрытие подсказок, если пост без текста
         if (arguments == null) {
             binding.supportGroup.isInvisible = true
         }
-//________________________________________________________________________________________________//
-        //закрытие (отмена) редактирования
+
+        //Заголовок редактируемого поста
+        binding.supportEdit.text = binding.content.text
+
+
+        // закрытие (отмена) редактирования
         binding.closeEditidButton.setOnClickListener {
-            //TODO
+            findNavController().navigateUp()
         }
-//________________________________________________________________________________________________//
-        //сохранение при нажатии на addPost
+
         binding.save.setOnClickListener {
             viewModel.editContent(binding.content.text.toString())
             viewModel.save()
             AndroidUtils.hideKeyboard(requireView())
             findNavController().navigateUp()
 
-//            val intent = Intent()
-//            if (TextUtils.isEmpty(binding.content.text)) {
-//                activity?.setResult(Activity.RESULT_CANCELED, intent)
-//            } else {
-//                val content: String = binding.content.text.toString()
-//                intent.putExtra(Intent.EXTRA_TEXT, content)
-//                activity?.setResult(Activity.RESULT_OK, intent)
-//            }
-//            findNavController().navigateUp()
         }
-//________________________________________________________________________________________________//
+
         return binding.root
     }
 
-    //________________________________________________________________________________________________//
-        companion object {
+
+    companion object {
         var Bundle.textArg: String? by StringArg
     }
 
@@ -89,31 +85,3 @@ class NewPostFragment : Fragment() {
         }
     }
 }
-
-
-//
-//binding.save.setOnClickListener {
-//    if (binding.content.text.isNullOrBlank()) {
-//        Toast.makeText(
-//
-//            this,
-//            getString(R.string.empty_post_error),
-//            Toast.LENGTH_SHORT
-//        ).show()
-//        setResult(AppCompatActivity.RESULT_CANCELED)
-//
-//    } else {
-//        val result = Intent().putExtra(Intent.EXTRA_TEXT, binding.content.text.toString())
-//        val text = binding.content.text.toString()
-//        setResult(AppCompatActivity.RESULT_OK, result)
-//        viewModel.editContent(text)
-//        viewModel.save()
-//        binding.content.clearFocus()
-//        AndroidUtils.hideKeyboard(binding.content)
-//        binding.content.setText("")
-//    }
-//    finish()
-//}
-//}
-//}
-//val text = binding.content.text.toString()

@@ -10,19 +10,19 @@ import ru.netology.nmedia.R
 import ru.netology.nmedia.activity.NewPostFragment.Companion.textArg
 import ru.netology.nmedia.databinding.ActivityAppBinding
 
-
 class AppActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+//____________________________________________________________________________________________//
         val binding = ActivityAppBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+//____________________________________________________________________________________________//
         intent?.let {
             if (it.action != Intent.ACTION_SEND) {
                 return@let
             }
+//____________________________________________________________________________________________//
             val text = it.getStringExtra(Intent.EXTRA_TEXT)
             if (text.isNullOrBlank()) {
                 Snackbar.make(binding.root, "Content can't be empty", LENGTH_INDEFINITE)
@@ -39,5 +39,10 @@ class AppActivity : AppCompatActivity() {
                 }
             )
         }
-    }
+//
+
+//        supportFragmentManager.beginTransaction()
+//            .add(R.id.nav_main, PostFragment.newInstance("1", "2")).commit()
+}
+
 }

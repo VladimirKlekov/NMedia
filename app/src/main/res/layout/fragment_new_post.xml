@@ -32,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/cardview_light_background"
-            android:text="Edit Message"
+            android:text="@string/edit_message"
             android:textColor="#0000ff"
             android:textStyle="bold|italic"
             app:layout_constraintStart_toEndOf="@id/pencil"

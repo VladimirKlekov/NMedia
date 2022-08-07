@@ -11,12 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.CardPostBinding
 import ru.netology.nmedia.dto.Post
-import java.text.DecimalFormat
+import ru.netology.nmedia.util.CountLikeShare
 
-//создал свой тип данных
-//typealias OnLikeListener = (post: Post) -> Unit
-//typealias OnShareListener = (post: Post) -> Unit
-//typealias OnRemoveListener = (post: Post) -> Unit
 
 //создаю своего слушателя вместо типов данных
 interface PostEventListener {
@@ -27,7 +23,6 @@ interface PostEventListener {
     fun onShare(post: Post)
     fun onVideo(post: Post)
 }
-
 
 class PostAdapter(
     private val listener: PostEventListener,
@@ -57,9 +52,9 @@ class PostViewHolder(
             author.text = post.author
             published.text = post.published
             content.text = post.content
-            like.text = roundingCount(post.likes)
-            share.text = roundingCount(post.share)
-            countEye.text = roundingCount(post.eye)
+            like.text = CountLikeShare.roundingCount(post.likes)
+            share.text = CountLikeShare.roundingCount(post.share)
+            countEye.text = CountLikeShare.roundingCount(post.eye)
             like.isChecked = post.likedByMe
 //            like.setImageResource(
 //                if (post.likedByMe) {
@@ -86,6 +81,10 @@ class PostViewHolder(
             video.setOnClickListener {
                 listener.onVideo(post)
             }
+            root.setOnClickListener {
+                println("root clicked")
+
+            }
             menuButton.setOnClickListener {
                 PopupMenu(it.context, it).apply {
                     inflate(R.menu.post_menu)//пункты меню
@@ -109,6 +108,7 @@ class PostViewHolder(
     }
 }
 
+
 class PostDiffCallback : DiffUtil.ItemCallback<Post>() {
     override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean {
         return oldItem.id == newItem.id
@@ -121,27 +121,3 @@ class PostDiffCallback : DiffUtil.ItemCallback<Post>() {
     override fun getChangePayload(oldItem: Post, newItem: Post): Any = Unit
 }
 
-fun roundingCount(value: Long): String {
-    var roundingCount: Double = 0.00
-    var result: String = ""
-
-    if (value < 1_000) {
-        roundingCount = value.toDouble()
-    } else if (value >= 1_000 && value < 1_000_000) {
-        roundingCount = (value.toDouble() / 1_000)
-    } else if (value >= 1_000_000) {
-        roundingCount = (value.toDouble() / 1_000_000)
-    }
-    when (value) {
-        in 0 until 1000 -> result = roundingCount.toLong().toString()
-        in 1_000 until 1_000_000 -> result =
-            DecimalFormat("#0.0").format(roundingCount).plus("k")
-        else -> result = DecimalFormat("#0.0").format(roundingCount).plus("m")
-    }
-    return result
-}
-//Adapter - класс, отвечающий за предоставление View, соответствующего конкретному элементу в наборе данных (посту в нашем случае).
-//Position - позиция элемента в Adapter'e.
-//Index - индекс View в Layout'e.
-//ViewHolder - класс, содержащий информацию о визуальном отображении конкретного элемента списка.
-//Binding - процесс подготовки View для отображения данных, соответствующих определённой позиции в адаптере.

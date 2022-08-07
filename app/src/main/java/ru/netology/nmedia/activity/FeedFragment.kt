@@ -37,30 +37,14 @@ class FeedFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 //____________________________________________________________________________________________//
+
+        //val binding: FragmentFeedBinding = FragmentFeedBinding.inflate(
         val binding: FragmentFeedBinding = FragmentFeedBinding.inflate(
             inflater,
             container,
             false
         )
-//____________________________________________________________________________________________//
-  val viewModel: PostViewModel by viewModels()
-//____________________________________________________________________________________________//
-        val newPostContract = registerForActivityResult(NewPostActivityContract()) { text ->
-            text?.let {
-                viewModel.editContent(it)
-                viewModel.save()
 
-            }
-        }
-//____________________________________________________________________________________________//
-        val editPostActivityContract =
-            registerForActivityResult(EditPostActivityContract()) { text ->
-                text?.let {
-                    viewModel.editContent(it)
-                    viewModel.save()
-                }
-            }
-//____________________________________________________________________________________________//
         val adapter = PostAdapter(
             object : PostEventListener {
 
@@ -72,9 +56,7 @@ class FeedFragment : Fragment() {
                             textArg = post.content
                         }
                     )
-
-//                    viewModel.edit(post)
-//                    editPostActivityContract.launch(post.content)
+//
                 }
 
                 override fun onRemove(post: Post) {
@@ -108,25 +90,16 @@ class FeedFragment : Fragment() {
         }
 //____________________________________________________________________________________________//
         binding.addPost.setOnClickListener {
-            newPostContract.launch()
+           findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
+
+//            newPostContract.launch()
         }
-//____________________________________________________________________________________________//
-        binding.addPost.setOnClickListener {
-            findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
-        }
+
+
 //____________________________________________________________________________________________//
         return binding.root
     }
-    //____________________________________________________________________________________________//
-//вспомогательнй объект для передачи текста
-//    companion object {
-//        private const val TEXT_KEY = "TEXT_KEY"
-//        var Bundle.textArg:String?
-//        set (value) = putString(TEXT_KEY,value)
-//        get() = getString(TEXT_KEY)
-//    }
 
-    //____________________________________________________________________________________________//
     //вспомогательный объект для передачи данных  между фрагментами
     companion object {
 
@@ -151,15 +124,3 @@ class FeedFragment : Fragment() {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
