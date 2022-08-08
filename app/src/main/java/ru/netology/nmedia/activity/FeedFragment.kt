@@ -29,6 +29,7 @@ class FeedFragment : Fragment() {
     private val viewModel: PostViewModel by viewModels(
         ownerProducer = ::requireParentFragment
     )
+
     //____________________________________________________________________________________________//
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,7 +56,7 @@ class FeedFragment : Fragment() {
                             textArg = post.content
                         }
                     )
-//
+
                 }
 
                 override fun onRemove(post: Post) {
@@ -67,6 +68,14 @@ class FeedFragment : Fragment() {
                 }
 
                 override fun onShare(post: Post) {
+                    val intent = Intent().apply {
+                        action = Intent.ACTION_SEND
+                        putExtra(Intent.EXTRA_TEXT, post.content)
+                        type = "text/plain"
+                    }
+                    val shareIntent = Intent.createChooser(intent, "Share post")
+                    startActivity(shareIntent)
+
                     viewModel.shareById(post.id)
                 }
 
@@ -76,10 +85,8 @@ class FeedFragment : Fragment() {
                 }
 
                 override fun onPost(post: Post) {
-                    val action = FeedFragmentDirections.ac
+                    val action = FeedFragmentDirections.actionFeedFragmentToPostFragment(post.id.toInt())
 
-
-                    actionFeedFragmentToPostFragment(postId)
                     findNavController().navigate(action)
                 }
 
@@ -87,12 +94,13 @@ class FeedFragment : Fragment() {
         )
 //____________________________________________________________________________________________//
         binding.container.adapter = adapter
+
 //____________________________________________________________________________________________//
         viewModel.data.observe(viewLifecycleOwner)
         { posts ->
-            val newPost = adapter.itemCount < posts.size
+            //val newPost = adapter.itemCount < posts.size
             adapter.submitList(posts) {
-                if (newPost) binding.container.smoothScrollToPosition(0)
+               //if (newPost) binding.container.smoothScrollToPosition(0)
             }
         }
 //____________________________________________________________________________________________//
