@@ -36,7 +36,9 @@
             app:argType="integer"/>
 
         </action>
-
+        <argument
+            android:name="content"
+            app:argType="string" />
 
 
     </fragment>
