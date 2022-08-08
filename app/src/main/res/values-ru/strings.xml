@@ -11,4 +11,5 @@
     <string name="vide_fopr_post">Видео для поста</string>
     <string name="play_video">Воспроизведение видео</string>
     <string name="edit_message">Редактирование поста</string>
+    <string name="hello_blank_fragment">Новый фрагмент</string>
 </resources>
