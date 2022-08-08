@@ -24,20 +24,29 @@ class AppActivity : AppCompatActivity() {
             }
 //____________________________________________________________________________________________//
             val text = it.getStringExtra(Intent.EXTRA_TEXT)
-            if (text.isNullOrBlank()) {
-                Snackbar.make(binding.root, "Content can't be empty", LENGTH_INDEFINITE)
-                    .setAction(android.R.string.ok) {
-                        finish()
-                    }
-                    .show()
+            if (text?.isNullOrBlank()!=true) {
+
+
+//                Snackbar.make(binding.root, "Content can't be empty", LENGTH_INDEFINITE)
+//                    .setAction(android.R.string.ok) {
+//                        finish()
+//                    }
+//                    .show()
                 return@let
             }
-            findNavController(R.id.navigation).navigate(
-                R.id.action_feedFragment_to_newPostFragment,
-                Bundle().apply {
+
+            intent.removeExtra(Intent.EXTRA_TEXT)
+
+            findNavController(R.id.nav_main).navigate(R.id.action_feedFragment_to_newPostFragment)
+            Bundle().apply {
                     textArg = text
+
+//            findNavController(R.id.navigation).navigate(
+//                R.id.action_feedFragment_to_newPostFragment,
+//                Bundle().apply {
+//                    textArg = text
                 }
-            )
+
         }
 //
 

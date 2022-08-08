@@ -37,7 +37,7 @@ class PostFragment : Fragment() {
         ownerProducer = ::requireParentFragment
     )
 
-    val args by navArgs<PostFragmentArgs>()
+    private val args by navArgs<PostFragmentArgs>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +53,7 @@ class PostFragment : Fragment() {
     ): View {
 
         val binding = FragmentPostBinding.inflate(inflater, container, false)
+
         val viewHolder = PostViewHolder(binding.cardPost, object : PostEventListener {
 
             override fun onEdit(post: Post) {
@@ -83,18 +84,22 @@ class PostFragment : Fragment() {
                 startActivity(intentVideo)
             }
 
+            override fun onPost(post: Post) {
+                TODO("Not yet implemented")
+            }
+
         })
         //подписываемся на обновление списка
         viewModel.data.observe(viewLifecycleOwner){posts->
             //ищем пост, который нужно отобразить
 
-            val post = posts.find { it.id == args.postId}?.run {
+            val post = posts.find { it.id == args.postId.toLong()}?.run {
                 findNavController().navigateUp()
                 return@observe
             }
             viewHolder.bind(post)
         }
-        binding.cardPost
+       // binding.cardPost
 
 
         return binding.root

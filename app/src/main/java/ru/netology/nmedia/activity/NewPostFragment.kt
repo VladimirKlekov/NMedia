@@ -10,6 +10,7 @@ import androidx.core.view.isInvisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import ru.netology.nmedia.databinding.FragmentNewPostBinding
 import ru.netology.nmedia.util.AndroidUtils
 import ru.netology.nmedia.viewmodel.PostViewModel
@@ -23,7 +24,7 @@ class NewPostFragment : Fragment() {
         var Bundle.textArg: String? by StringArg
     }
 
-    //val args by navArgs<NewPostFragmentArgs>()
+    val args by navArgs<NewPostFragmentArgs>()
     //____________________________________________________________________________________________//
     //представляем ViewModel нескольким активити
     private val viewModel: PostViewModel by viewModels(
