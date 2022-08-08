@@ -59,7 +59,7 @@ class PostFragment : Fragment() {
             override fun onEdit(post: Post) {
                 viewModel.edit(post)
                 findNavController().navigate(
-                    R.id.action_feedFragment_to_newPostFragment,
+                    R.id.action_postFragment_to_newPostFragment,
                     Bundle().apply {
                         textArg = post.content
                     }
