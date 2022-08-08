@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isGone
 import androidx.core.view.isInvisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -51,8 +52,8 @@ class NewPostFragment : Fragment() {
         }
 
         //скрытие подсказок, если пост без текста
-        if (arguments == null) {
-            binding.supportGroup.isInvisible = true
+        if (arguments?.textArg == null) {
+            binding.supportGroup.isGone = true
         }
 
         //Заголовок редактируемого поста
