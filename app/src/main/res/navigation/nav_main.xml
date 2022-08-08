@@ -22,8 +22,8 @@
                 app:argType="string" />
         </action>
         <argument
-            android:name="content"
-            app:argType="string" />
+            android:name="postId"
+            app:argType="integer" />
     </fragment>
 
     <fragment

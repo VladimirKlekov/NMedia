@@ -76,7 +76,7 @@ class FeedFragment : Fragment() {
                 }
 
                 override fun onPost(post: Post) {
-                    val action = FeedFragmentDirections.
+                    val action = FeedFragmentDirections.ac
 
 
                     actionFeedFragmentToPostFragment(postId)
