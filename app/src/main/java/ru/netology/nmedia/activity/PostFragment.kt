@@ -85,7 +85,7 @@ class PostFragment : Fragment() {
             }
 
             override fun onPost(post: Post) {
-                TODO("Not yet implemented")
+
             }
 
         })

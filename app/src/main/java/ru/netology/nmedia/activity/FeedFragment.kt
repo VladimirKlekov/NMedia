@@ -86,7 +86,6 @@ class FeedFragment : Fragment() {
 
                 override fun onPost(post: Post) {
                     val action = FeedFragmentDirections.actionFeedFragmentToPostFragment(post.id.toInt())
-
                     findNavController().navigate(action)
                 }
 
