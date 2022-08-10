@@ -76,6 +76,13 @@ class PostFragment : Fragment() {
             }
 
             override fun onShare(post: Post) {
+                val intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, post.content)
+                    type = "text/plain"
+                }
+                val shareIntent = Intent.createChooser(intent, "Share post")
+                startActivity(shareIntent)
                 viewModel.shareById(post.id)
             }
 
