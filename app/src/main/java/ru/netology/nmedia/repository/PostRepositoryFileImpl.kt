@@ -84,4 +84,14 @@ class PostRepositoryFileImpl(private val context: Context) : PostRepository {
         posts = data.value.orEmpty()
         sync()
     }
+
+    override fun textStorage(value: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun textStorageDelete(): String {
+        TODO("Not yet implemented")
+    }
+
+
 }

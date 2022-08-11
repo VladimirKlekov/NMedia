@@ -77,6 +77,15 @@ class PostRepositorySharedPrefsImpl(context: Context) : PostRepository {
         sync()
     }
 
+    override fun textStorage(value: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun textStorageDelete(): String {
+        TODO("Not yet implemented")
+    }
+
+
     private fun sync() {
         with(prefs.edit()) {
             putString(key, gson.toJson(posts))

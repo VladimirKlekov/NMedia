@@ -4,17 +4,30 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.interfaces.PostDao
+import ru.netology.nmedia.viewmodel.empty
 
 class PostRepositorySQLiteImpl(
     private val dao:PostDao
 ):PostRepository {
     private var posts = emptyList<Post>()
     private val data = MutableLiveData(posts)
-
+    private val textStorages = mutableListOf<String>()
     init {
         posts = dao.getAll()
         data.value = posts
 
+    }
+
+    override fun textStorage(value: String) {
+        textStorages.add(value)
+    }
+
+    override fun textStorageDelete():String {
+        var transferTex = textStorages.toString()
+            .replace("[", "")
+            .replace("]", "")
+        textStorages.clear()
+        return transferTex
     }
 
     override fun getAll(): LiveData<List<Post>> = data
@@ -65,4 +78,8 @@ class PostRepositorySQLiteImpl(
         }
         data.value = posts
     }
+
+
 }
+
+

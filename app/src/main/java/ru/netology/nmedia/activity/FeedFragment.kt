@@ -9,6 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import ru.netology.nmedia.R
@@ -18,6 +20,7 @@ import ru.netology.nmedia.adapter.PostEventListener
 import ru.netology.nmedia.databinding.FragmentFeedBinding
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.viewmodel.PostViewModel
+import kotlin.concurrent.fixedRateTimer
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
@@ -105,12 +108,19 @@ class FeedFragment : Fragment() {
 //____________________________________________________________________________________________//
         binding.addPost.setOnClickListener {
             //val args = NewPostFragmentArgs.Builder().setContent("111").build()
+//            var textCopyFragment =""
+
+//             var x = setFragmentResultListener("keyTextCopyFragment") { key, bundle ->
+//                // Здесь можно передать любой тип, поддерживаемый Bundle-ом
+//              textCopyFragment = bundle.getString("bundleKey").toString()
+//
+//             }
             val action = FeedFragmentDirections.actionFeedFragmentToNewPostFragment("111")
             findNavController().navigate(action)
 
-//           findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
 //            newPostContract.launch()
         }
+
         //____________________________________________________________________________________________//
 
 //        parentFragmentManager.beginTransaction()
@@ -141,6 +151,15 @@ class FeedFragment : Fragment() {
         //функция для записи какого-то значения из "временного хранения"
         override fun setValue(thisRef: Bundle, property: KProperty<*>, value: Int) {
             thisRef.putInt(property.name, value)
+        }
+    }
+    object StringArgText : ReadWriteProperty<Bundle, String?> {
+        override fun getValue(thisRef: Bundle, property: KProperty<*>): String? {
+            return thisRef.getString(property.name)
+        }
+
+        override fun setValue(thisRef: Bundle, property: KProperty<*>, value: String?) {
+            thisRef.putString(property.name, value)
         }
     }
 }

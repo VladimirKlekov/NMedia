@@ -11,4 +11,6 @@ interface PostRepository{
         fun eye()
         fun removeById(id:Long)
         fun save(post:Post)
+        fun textStorage(value: String)
+        fun textStorageDelete():String
 }

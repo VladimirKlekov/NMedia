@@ -103,6 +103,15 @@ class PostRepositoryInMemoryImpl : PostRepository {
         posts = data.value.orEmpty()
     }
 
+    override fun textStorage(value: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun textStorageDelete(): String {
+        TODO("Not yet implemented")
+    }
+
+
     private val data = MutableLiveData(posts)
 
     //возврщать подписку на пост
