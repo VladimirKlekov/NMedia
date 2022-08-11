@@ -12,4 +12,6 @@
     <string name="play_video">Воспроизведение видео</string>
     <string name="edit_message">Редактирование поста</string>
     <string name="hello_blank_fragment">Новый фрагмент</string>
+    <string name="channel_remote_name">Имя удаленного канала</string>
+    <string name="channel_remote_description">Уведомления с удаленного сервера</string>
 </resources>
