@@ -2,7 +2,7 @@ package ru.netology.nmedia.databases
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
-import ru.netology.nmedia.dto.PostDaoImpl
+import ru.netology.nmedia.dao.PostDaoImpl
 import ru.netology.nmedia.helper.DbHelper
 import ru.netology.nmedia.interfaces.PostDao
 

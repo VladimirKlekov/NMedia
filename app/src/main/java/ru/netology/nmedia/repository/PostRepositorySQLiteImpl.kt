@@ -4,11 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.interfaces.PostDao
-import ru.netology.nmedia.viewmodel.empty
+import ru.netology.nmedia.interfaces.PostRepository
 
 class PostRepositorySQLiteImpl(
     private val dao:PostDao
-):PostRepository {
+): PostRepository {
     private var posts = emptyList<Post>()
     private val data = MutableLiveData(posts)
     private val textStorages = mutableListOf<String>()

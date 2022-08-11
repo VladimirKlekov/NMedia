@@ -72,10 +72,6 @@ class NewPostFragment : Fragment() {
 
             var copyText = binding.content.text.toString()
             viewModel.textStorage(copyText)
-
-
-            println("NPF" + copyText)
-            //setFragmentResult("keyTextCopyFragment", bundleOf("bundleKey" to copyText))
             findNavController().navigateUp()
         }
 
