@@ -1,18 +1,13 @@
 package ru.netology.nmedia.databases
 
 import android.content.Context
+import android.database.sqlite.SQLiteDatabase
+import ru.netology.nmedia.dao.PostDaoImpl
+import ru.netology.nmedia.helper.DbHelper
+import ru.netology.nmedia.interfaces.PostDao
 
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
-import ru.netology.nmedia.dao.PostDao
-import ru.netology.nmedia.dao.PostEntity
-
-
-
-@Database(entities = [PostEntity::class], version = 1)
-abstract class AppDb : RoomDatabase() {
-    abstract fun postDao(): PostDao
+class AppDb private constructor(db: SQLiteDatabase) {
+    val postDao: PostDao = PostDaoImpl(db)
 
     companion object {
         @Volatile
@@ -20,38 +15,14 @@ abstract class AppDb : RoomDatabase() {
 
         fun getInstance(context: Context): AppDb {
             return instance ?: synchronized(this) {
-                instance ?: buildDatabase(context).also { instance = it }
+                instance ?: AppDb(
+                    buildDatabase(context, arrayOf(PostDaoImpl.DDL))
+                ).also { instance = it }
             }
         }
 
-        private fun buildDatabase(context: Context) =
-            Room.databaseBuilder(context, AppDb::class.java, "app.db")
-                .fallbackToDestructiveMigration()
-                .allowMainThreadQueries()
-                .build()
+        private fun buildDatabase(context: Context, DDLs: Array<String>) = DbHelper(
+            context, 1, "app.db", DDLs,
+        ).writableDatabase
     }
 }
-
-
-//
-//class AppDb private constructor(db: SQLiteDatabase) {
-//    val postDao: PostDao = PostDao(db)
-//
-//    companion object {
-//        @Volatile
-//        private var instance: AppDb? = null
-//
-//        fun getInstance(context: Context): AppDb {
-//            return instance ?: synchronized(this) {
-//                instance ?: AppDb(
-//                    buildDatabase(context, arrayOf(PostDao.DDL))
-//                ).also { instance = it }
-//            }
-//        }
-//
-//        private fun buildDatabase(context: Context, DDLs: Array<String>) = DbHelper(
-//            context, 1, "app.db", DDLs,
-//        ).writableDatabase
-//    }
-//}
-

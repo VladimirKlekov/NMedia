@@ -64,17 +64,16 @@ class PostFragment : Fragment() {
                         textArg = post.content
                     }
                 )
-//
             }
-
+//________________________________________________________________________________________________//
             override fun onRemove(post: Post) {
                 viewModel.removeById(post.id)
             }
-
+//________________________________________________________________________________________________//
             override fun onLike(post: Post) {
                 viewModel.likeById(post.id)
             }
-
+//________________________________________________________________________________________________//
             override fun onShare(post: Post) {
                 val intent = Intent().apply {
                     action = Intent.ACTION_SEND
@@ -85,12 +84,12 @@ class PostFragment : Fragment() {
                 startActivity(shareIntent)
                 viewModel.shareById(post.id)
             }
-
+//________________________________________________________________________________________________//
             override fun onVideo(post: Post) {
                 val intentVideo = Intent(Intent.ACTION_VIEW, Uri.parse(post.video))
                 startActivity(intentVideo)
             }
-
+//________________________________________________________________________________________________//
             override fun onPost(post: Post) {
 
             }
@@ -124,7 +123,7 @@ class PostFragment : Fragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            //метод newInstanсе нужен, что бы сохранить логику создания нового объекта
+        //метод newInstanсе нужен, что бы сохранить логику создания нового объекта
             //вернет класс PostFragment
             PostFragment().apply {
                 arguments = Bundle().apply {

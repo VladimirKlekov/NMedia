@@ -6,8 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
+import androidx.core.os.bundleOf
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -19,8 +22,10 @@ import kotlin.reflect.KProperty
 
 
 class NewPostFragment : Fragment() {
+
     companion object {
         var Bundle.textArg: String? by StringArg
+
     }
 
     val args by navArgs<NewPostFragmentArgs>()
@@ -31,6 +36,7 @@ class NewPostFragment : Fragment() {
         ownerProducer = ::requireParentFragment
     )
     //____________________________________________________________________________________________//
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -41,27 +47,29 @@ class NewPostFragment : Fragment() {
             container,
             false
         )
-        //Обращаемся к свойсту аргумента и читаем текст.
-            arguments?.textArg?.let (
-                binding.supportEdit::setText
-                //binding.content.setText(it)
-            )
+        arguments?.textArg?.let {
+            binding.content.setText(it)
+        }
 
         var backText = viewModel.textStorageDelete()
 
-        if (arguments?.textArg == null) {
+        if (backText != null) {
             binding.content.setText(backText).toString()
             backText = ""
+        } else {
+            //Обращаемся к свойсту аргумента и читаем текст.
+            arguments?.textArg?.let {
+                binding.content.setText(it)
+            }
         }
 
-
         binding.content.requestFocus()
+
 
         //скрытие подсказок, если пост без текста
         if (arguments?.textArg == null) {
             binding.supportGroup.isGone = true
         }
-
         //сохранение текста при возврате
         val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
             var copyText = binding.content.text.toString()
@@ -69,25 +77,29 @@ class NewPostFragment : Fragment() {
             findNavController().navigateUp()
         }
 
-        //Заголовок редактируемого поста
-        binding.supportEdit.text = arguments?.textArg
+//_________________________________________________________________________________________________//
+        //оформление
 
+        //Заголовок редактируемого поста
+        binding.supportEdit.text = binding.content.text
         // закрытие (отмена) редактирования
         binding.closeEditidButton.setOnClickListener {
             findNavController().navigateUp()
         }
-
-        // сохранение ввода (редактирования)
-        binding.save.setOnClickListener {
+//_________________________________________________________________________________________________//
+        //сохранение поста
+                binding.save.setOnClickListener {
             viewModel.editContent(binding.content.text.toString())
             viewModel.save()
             AndroidUtils.hideKeyboard(requireView())
             findNavController().navigateUp()
 
         }
+//_________________________________________________________________________________________________//
         return binding.root
 
     }
+
 
     object StringArg : ReadWriteProperty<Bundle, String?> {
         override fun getValue(thisRef: Bundle, property: KProperty<*>): String? {
@@ -100,4 +112,3 @@ class NewPostFragment : Fragment() {
 
     }
 }
-

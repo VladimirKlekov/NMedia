@@ -31,7 +31,7 @@ class PostRepositoryImpl(
     }
 
     override fun removeById(id: Long) {
-        dao.likeById(id)
+        dao.removeById(id)
     }
 
     override fun save(post: Post) {

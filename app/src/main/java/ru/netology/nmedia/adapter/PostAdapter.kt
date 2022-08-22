@@ -57,6 +57,13 @@ class PostViewHolder(
             share.text = CountLikeShare.roundingCount(post.share)
             countEye.text = CountLikeShare.roundingCount(post.eye)
             like.isChecked = post.likedByMe
+//            like.setImageResource(
+//                if (post.likedByMe) {
+//                    R.drawable.ic_liked
+//                } else {
+//                    R.drawable.ic_like
+//                }
+//            )
 
             if (post.video == null) {
                 binding.videoGroup.visibility = View.GONE
@@ -116,4 +123,3 @@ class PostDiffCallback : DiffUtil.ItemCallback<Post>() {
 
     override fun getChangePayload(oldItem: Post, newItem: Post): Any = Unit
 }
-

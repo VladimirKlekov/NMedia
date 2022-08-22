@@ -14,6 +14,4 @@ data class Post(
     var eye:Long,
     val video: String? = null
 
-    )
-
-
+)
