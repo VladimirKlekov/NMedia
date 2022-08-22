@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">NMedia</string>
+    <string name="textAuthor">Нетология. Университет интернет-профессий</string>
+    <string name="textTime">21 мая в 18:36</string>
+    <string name="textPost">Привет учителям Нетологии!!! Пост пост пост.</string>
+    <string name="post_menu_remove">Remove</string>
+    <string name="post_menu_edit">Edit</string>
+    <string name="post_input_text">Post text</string>
+    <string name="empty_post_error">Post is blank</string>
+    <string name="vide_fopr_post">vide fopr post</string>
+    <string name="play_video">play video</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="edit_message">Edit Message</string>
+    <string name="channel_remote_name">Server notifications</string>
+    <string name="channel_remote_description">Notifications from remote server</string>
+    <string name="notification_user_liked">User %1$s liked %2$s\'s post</string>
+
+
 </resources>
