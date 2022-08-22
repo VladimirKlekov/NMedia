@@ -25,7 +25,6 @@ class NewPostFragment : Fragment() {
 
     companion object {
         var Bundle.textArg: String? by StringArg
-
     }
 
     val args by navArgs<NewPostFragmentArgs>()
@@ -50,7 +49,7 @@ class NewPostFragment : Fragment() {
         arguments?.textArg?.let {
             binding.content.setText(it)
         }
-
+//_______________________________________________________________________________________________//
         var backText = viewModel.textStorageDelete()
 
         if (backText != null) {
@@ -62,10 +61,9 @@ class NewPostFragment : Fragment() {
                 binding.content.setText(it)
             }
         }
-
+//_______________________________________________________________________________________________//
         binding.content.requestFocus()
-
-
+//_______________________________________________________________________________________________//
         //скрытие подсказок, если пост без текста
         if (arguments?.textArg == null) {
             binding.supportGroup.isGone = true

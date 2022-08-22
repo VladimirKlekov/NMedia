@@ -1,4 +1,4 @@
-package ru.netology.nmedia_pusher.service
+package ru.netology.nmedia.service
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -11,7 +11,6 @@ import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
 import ru.netology.nmedia.R
 import kotlin.random.Random
-
 
 class FCMService : FirebaseMessagingService() {
     private val action = "action"
@@ -43,7 +42,7 @@ class FCMService : FirebaseMessagingService() {
     }
 
     override fun onNewToken(token: String) {
-                println(token)
+        println(token)
 
     }
 
@@ -55,8 +54,10 @@ class FCMService : FirebaseMessagingService() {
                     R.string.notification_user_liked,
                     content.userName,
                     content.postAuthor,
+
                 )
             )
+            .setContentText(content.text)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .build()
 
@@ -74,4 +75,5 @@ data class Like(
     val userName: String,
     val postId: Long,
     val postAuthor: String,
+    val text: String
 )

@@ -32,13 +32,14 @@ class PostFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+//________________________________________________________________________________________________//
 
     private val viewModel: PostViewModel by viewModels(
         ownerProducer = ::requireParentFragment
     )
-
+//________________________________________________________________________________________________//
     private val args by navArgs<PostFragmentArgs>()
-
+//________________________________________________________________________________________________//
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -46,23 +47,27 @@ class PostFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
     }
-
+//________________________________________________________________________________________________//
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         val binding = FragmentPostBinding.inflate(inflater, container, false)
 
-        val viewHolder = PostViewHolder(binding.cardPost, object : PostEventListener {
+//_______________________________________________________________________________________________//
 
+        val viewHolder = PostViewHolder(binding.cardPost, object : PostEventListener {
             override fun onEdit(post: Post) {
+                //вызвал метод редактирования из вью модели с данными поста
                 viewModel.edit(post)
+                //свернул пост фрагмент
                 findNavController().navigate(
+                    //при этом перешол к нью пост фрагмент
                     R.id.action_postFragment_to_newPostFragment,
+                    //выполнил и сохранил в конструктор
                     Bundle().apply {
                         textArg = post.content
-                    }
+                   }
                 )
             }
 //________________________________________________________________________________________________//
@@ -91,26 +96,21 @@ class PostFragment : Fragment() {
             }
 //________________________________________________________________________________________________//
             override fun onPost(post: Post) {
-
             }
-
         })
+//_______________________________________________________________________________________________//
         //подписываемся на обновление списка
-        viewModel.data.observe(viewLifecycleOwner){posts->
+        viewModel.data.observe(viewLifecycleOwner) { posts ->
             //ищем пост, который нужно отобразить
-
-            val post = posts.find { it.id == args.postId.toLong()}?:run {
+            val post = posts.find { it.id == args.postId.toLong() } ?: run {
                 findNavController().navigateUp()
                 return@observe
             }
             viewHolder.bind(post)
         }
-
-
-
         return binding.root
     }
-
+//________________________________________________________________________________________________//
     companion object {
         /**
          * Use this factory method to create a new instance of

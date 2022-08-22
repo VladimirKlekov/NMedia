@@ -33,11 +33,15 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     private val edited = MutableLiveData(empty)
 
     fun textStorage(value: String) = repository.textStorage(value)
+
     fun textStorageDelete() = repository.textStorageDelete()
 
     fun likeById(id: Long) = repository.likeById(id)
+
     fun shareById(id: Long) = repository.shareById(id)
+
     fun eye() =repository.eye()
+
     fun removeById(id: Long) = repository.removeById(id)
 
     fun editContent(content: String) {

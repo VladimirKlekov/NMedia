@@ -14,4 +14,5 @@
     <string name="hello_blank_fragment">Новый фрагмент</string>
     <string name="channel_remote_name">Имя удаленного канала</string>
     <string name="channel_remote_description">Уведомления с удаленного сервера</string>
+    <string name="google_play_unavailable">google play недоступен</string>
 </resources>
