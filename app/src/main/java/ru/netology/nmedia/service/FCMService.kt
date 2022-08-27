@@ -31,33 +31,83 @@ class FCMService : FirebaseMessagingService() {
             manager.createNotificationChannel(channel)
         }
     }
-
+//_______________________________________________________________________________________________//
     override fun onMessageReceived(message: RemoteMessage) {
 
-        message.data[action]?.let {
-            when (Action.valueOf(it)) {
-                Action.LIKE -> handleLike(gson.fromJson(message.data[content], Like::class.java))
+        try {
+            message.data[action]?.let {
+                when (Action.valueOf(it)) {
+                    Action.LIKE -> handleLike(
+                        gson.fromJson(
+                            message.data[content],
+                            Like::class.java
+                        )
+                    )
+                    Action.POST -> handleNewPost(
+                        gson.fromJson(
+                            message.data[content],
+                            New_Post::class.java
+                        )
+                    )
+                }
             }
+        } catch (error: IllegalArgumentException) {
+            errorMessage(gson.fromJson(message.data[content], Notification::class.java))
         }
     }
-
+//______________________________________________________________________________________________//
     override fun onNewToken(token: String) {
         println(token)
-
     }
+//_______________________________________________________________________________________________//
+    private fun errorMessage(content: Notification) {
+        val notification = NotificationCompat.Builder(this, channelId)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setShowWhen(false)
+            .setContentTitle(
+                getString(
+                    R.string.error_notification_title
+                )
+            )
+            .setContentText(
+                getString(
+                    R.string.error_notification_text
+                )
+            )
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .build()
 
+        NotificationManagerCompat.from(this)
+            .notify(Random.nextInt(100_000), notification)
+    }
+//_______________________________________________________________________________________________//
     private fun handleLike(content: Like) {
         val notification = NotificationCompat.Builder(this, channelId)
-            .setSmallIcon(R.drawable.ic_notification)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle(
                 getString(
                     R.string.notification_user_liked,
                     content.userName,
                     content.postAuthor,
-
                 )
             )
-            .setContentText(content.text)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .build()
+
+        NotificationManagerCompat.from(this)
+            .notify(Random.nextInt(100_000), notification)
+    }
+//_______________________________________________________________________________________________//
+    private fun handleNewPost(content: New_Post) {
+        val notification = NotificationCompat.Builder(this, channelId)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setContentTitle(
+                getString(
+                    R.string.notification_user_new_posted,
+                    content.postAuthor
+                )
+            )
+            .setStyle(NotificationCompat.BigTextStyle().bigText(content.postContent))
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .build()
 
@@ -65,15 +115,26 @@ class FCMService : FirebaseMessagingService() {
             .notify(Random.nextInt(100_000), notification)
     }
 }
-
-enum class Action {
-    LIKE,
-}
-
+//_______________________________________________________________________________________________//
+data class New_Post(
+    val postId: Long,
+    val postAuthor: String,
+    val postContent: String
+)
+//_______________________________________________________________________________________________//
 data class Like(
     val userId: Long,
     val userName: String,
     val postId: Long,
     val postAuthor: String,
-    val text: String
 )
+//________________________________________________________________________________________________//
+enum class Action {
+    LIKE,
+    POST
+}
+//_______________________________________________________________________________________________//
+data class Notification(
+    val textNotification: String
+)
+
