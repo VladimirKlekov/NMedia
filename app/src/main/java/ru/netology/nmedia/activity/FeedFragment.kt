@@ -8,9 +8,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.setFragmentResultListener
+
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import ru.netology.nmedia.R
@@ -32,12 +32,15 @@ class FeedFragment : Fragment() {
     private val viewModel: PostViewModel by viewModels(
         ownerProducer = ::requireParentFragment
     )
+
     //____________________________________________________________________________________________//
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
+
+        //viewModel.save()
 //____________________________________________________________________________________________//
         val binding: FragmentFeedBinding = FragmentFeedBinding.inflate(
             inflater,
@@ -48,7 +51,7 @@ class FeedFragment : Fragment() {
         val adapter = PostAdapter(
             object : PostEventListener {
 
-//________________________________________________________________________________________________//
+                //________________________________________________________________________________________________//
 //редактирование поста
                 override fun onEdit(post: Post) {
                     viewModel.edit(post)
@@ -59,16 +62,19 @@ class FeedFragment : Fragment() {
                         }
                     )
                 }
-//________________________________________________________________________________________________//
+
+                //________________________________________________________________________________________________//
                 //удаление поста
                 override fun onRemove(post: Post) {
                     viewModel.removeById(post.id)
                 }
-//________________________________________________________________________________________________//
+
+                //________________________________________________________________________________________________//
                 override fun onLike(post: Post) {
                     viewModel.likeById(post.id)
                 }
-//________________________________________________________________________________________________//
+
+                //________________________________________________________________________________________________//
                 override fun onShare(post: Post) {
                     val intent = Intent().apply {
                         action = Intent.ACTION_SEND
@@ -80,14 +86,17 @@ class FeedFragment : Fragment() {
 
                     viewModel.shareById(post.id)
                 }
-//_________________________________________________________________________________________________//
+
+                //_________________________________________________________________________________________________//
                 override fun onVideo(post: Post) {
                     val intentVideo = Intent(Intent.ACTION_VIEW, Uri.parse(post.video))
                     startActivity(intentVideo)
                 }
-//_________________________________________________________________________________________________//
+
+                //_________________________________________________________________________________________________//
                 override fun onPost(post: Post) {
-                    val action = FeedFragmentDirections.actionFeedFragmentToPostFragment(post.id.toInt())
+                    val action =
+                        FeedFragmentDirections.actionFeedFragmentToPostFragment(post.id.toInt())
                     findNavController().navigate(action)
                 }
 
@@ -97,13 +106,20 @@ class FeedFragment : Fragment() {
         binding.container.adapter = adapter
 
 //____________________________________________________________________________________________//
-        viewModel.data.observe(viewLifecycleOwner)
-        { posts ->
-            //val newPost = adapter.itemCount < posts.size
-            adapter.submitList(posts) {
-                //if (newPost) binding.container.smoothScrollToPosition(0)
+        viewModel.data.observe(viewLifecycleOwner) { state ->
+            with(binding) {
+                progress.isVisible = state.loading
+                errorGroup.isVisible = state.error
+                emptyText.isVisible = state.empty
+
             }
+            adapter.submitList(state.posts)
         }
+
+        binding.retryButton.setOnClickListener {
+            viewModel.load()
+        }
+
 //____________________________________________________________________________________________//
         binding.addPost.setOnClickListener {
             //val args = NewPostFragmentArgs.Builder().setContent("111").build()
@@ -152,6 +168,7 @@ class FeedFragment : Fragment() {
             thisRef.putInt(property.name, value)
         }
     }
+
     object StringArgText : ReadWriteProperty<Bundle, String?> {
         override fun getValue(thisRef: Bundle, property: KProperty<*>): String? {
             return thisRef.getString(property.name)

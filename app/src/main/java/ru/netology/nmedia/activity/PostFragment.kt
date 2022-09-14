@@ -100,14 +100,14 @@ class PostFragment : Fragment() {
         })
 //_______________________________________________________________________________________________//
         //подписываемся на обновление списка
-        viewModel.data.observe(viewLifecycleOwner) { posts ->
-            //ищем пост, который нужно отобразить
-            val post = posts.find { it.id == args.postId.toLong() } ?: run {
-                findNavController().navigateUp()
-                return@observe
-            }
-            viewHolder.bind(post)
-        }
+//        viewModel.data.observe(viewLifecycleOwner) { posts ->
+//            //ищем пост, который нужно отобразить
+//            val post = posts.find { it.id == args.postId.toLong() } ?: run {
+//                findNavController().navigateUp()
+//                return@observe
+//            }
+//            viewHolder.bind(post)
+//        }
         return binding.root
     }
 //________________________________________________________________________________________________//

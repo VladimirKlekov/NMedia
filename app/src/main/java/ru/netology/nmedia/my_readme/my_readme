@@ -1,0 +1,242 @@
+Многопоточность: потоки, проблемы общих данных
+
+1.Возьмём наш Android клиент и попробуем отправить запрос на сервер.
+
+2.Подключим библиотеку
+Для отправки запроса на сервер воспользуемся самой популярной библиотекой okhttp*.
+Подключим её в app/build.gradle:
+def okhttp.version = "4.9.1"
+implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+
+=> сделал _________________________________________________________________________________________
+
+3.Для запросов в сеть (за пределы устройства) нам нужны
+  соответствующие разрешения (permissions') от пользователя.
+  Permissions (для разработчика) делятся на следующие группы:
+  1.	Install-time (пользователю показываются при установке -требуют лишь записи в манифесте)
+  2.	Runtime (запрашиваются у пользователя в момент использования - требуют кода для обработки решения пользователя)
+  3.	Special (для производителей)
+=> теория _________________________________________________________________________________________
+
+4.Доступ в сеть является Install-time permission, достаточно его прописать в AndroidManifest.xml:
+  <?xml version="1.0" encoding="utf-8"?>
+  <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="ru.netology.nmedia">
+  <uses-permission android:name="android.permission.INTERNET" />
+  «application
+  android:allowBackup="true"
+  И	android: icon="@mipmap/ic .launcher"
+  android:label="NMedia"
+  И	android:roundIcon="@mipmap/ic_launcher_round"
+  android:supportsRtl="true"
+=> сделал _________________________________________________________________________________________
+
+5.HTTP
+  Чтобы реализовать доступ к HTTP трафику только в debug сборке, мы воспользуемся механизмом manifest placeholders:
+
+  //прописываю в build.gradle(app)
+  buildTypes {
+  release {
+  minifyEnabled false
+  proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),'proguard-rules.pro'
+  manifestPlaceholders.usesCleartextTraffic = false
+                      -----------------------------
+  }
+  debug {
+  manifestPlaceholders.usesCleartextTraffic = true
+                       -----------------------------
+  }
+  }
+
+  //прописываю в манифест
+   <application
+          android:allowBackup="true"
+          android:icon="@mipmap/ic_launcher_my"
+          android:label="@string/app_name"
+          android:roundIcon="@mipmap/ic_launcher_my_round"
+          android:supportsRtl="true"
+          android:theme="@style/Theme.NMedia">
+          android:usesCleartextTraffic="${usesCleartextTraffic}">
+                                          --------------------------
+=> сделал _________________________________________________________________________________________
+
+6.REPOSITORY
+  Для выполнения запроса нам понадобится OkHttpCIient и Gson для десериализации :
+
+  OkHttp - это HTTP-клиент от Square для приложений Java и Android. Он предназначен для более
+  быстрой загрузки ресурсов и экономии пропускной способности.
+
+  Делаем все это в классе PostRepositoryImpl. Плюсом там же переопределяю  методы.
+  - Делаем объект с константой, в которой указываю Url нашего сервера
+(если нужно протестировать на мобильном устройстве, то нужно подключиться через wifi и посмотреть IP);
+  - getAll(): List<Post> будем запрашивать данные с сервера и отображать их;
+
+  P.S. Сериализация - это процесс преобразования данных, используемых приложением, в формат, который
+  может быть передан по сети или сохранен в базе данных или файле. В свою очередь,
+  десериализация - это противоположный процесс чтения данных из внешнего источника и преобразования
+  их в объект среды выполнения. Вместе они являются неотъемлемой частью большинства приложений,
+  которые обмениваются данными с третьими сторонами.
+
+=> сделал _________________________________________________________________________________________
+
+  7.СЕРВЕР NMEDIA
+    Напоминаем, что у нас есть сервер, который вам необходимо запускать на вашей локальной машине с помощью
+    команд ./gradlew bootRun Linux/Mac ./gradlew bootRun Windows в командной строке или через IDEA.
+    Сервер запускается на порту 9999 и доступен из Android эмулятора по адресу htto://10.0.2.2:9999.
+    У сервера есть два пути:
+    •	/api - обычные запросы (отрабатывают быстро)
+    •	/api/slow - медленные запросы (с задержкой)
+
+    8.Делаю FeedModel
+    Поскольку запрос в сеть может занимать продолжительное время, то чтобы пользователь не скучал,
+    покажем ему на экране ProgressBar на время загрузки. В случае ошибки нужно дать возможность попробовать снова.
+    Для этого немного изменим интерфейс запроса постов. В ответ вернём описание текущего состояния экрана:
+
+    data class FeedModel(
+        val posts: List<Post> = emptyList(),
+        val loading: Boolean = false,
+        val error: Boolean = false,
+        val empty: Boolean = false
+
+    )
+
+    9.Изменяю PostViewModel
+    class PostViewModel(application: Application) : AndroidViewModel(application) {
+
+        private val repository: PostRepository = PostRepositoryImpl()
+        private val _data = MutableLiveData(FeedModel())
+        val data: LiveData<FeedModel>
+            get() = _data
+        val edited = MutableLiveData(empty)
+
+        init{
+            load()
+        }
+
+        fun load() {
+            thread {
+                //начинаем загрузку
+                _data.postValue(FeedModel(loading = true))
+                //данные успешно получены
+                try {
+                    val posts = repository.getAll()
+                    FeedModel(posts = posts, empty = posts.isEmpty())
+                } catch (e: IOException) {
+    //получена ошибка
+                    FeedModel(error = true)
+                }.also { _data::postValue }
+            }
+        }
+
+=> сделал _________________________________________________________________________________________
+
+    10. Изменяю FeedFragment и вношу изменения в лэйауты
+
+   <?xml version="1.0" encoding="utf-8"?>
+   <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:app="http://schemas.android.com/apk/res-auto"
+       xmlns:tools="http://schemas.android.com/tools"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       tools:context=".activity.FeedFragment">
+
+
+       <ProgressBar
+           android:id="@+id/progress"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:visibility="gone"
+           app:layout_constraintBottom_toBottomOf="parent"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintTop_toTopOf="parent" />
+
+       <Button
+           android:id="@+id/retryButton"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="@string/retry_loading"
+           app:layout_constraintBottom_toBottomOf="parent"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintTop_toBottomOf="@id/retryTitle"
+           />
+
+       <TextView
+           android:id="@+id/retryTitle"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_marginBottom="@dimen/common_spacing_16dp"
+           android:text="@string/error_loading"
+           app:layout_constraintBottom_toTopOf="@id/emptyText"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintTop_toTopOf="parent"
+           app:layout_constraintVertical_chainStyle="packed" />
+
+       <TextView
+           android:id="@+id/emptyText"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:text="@string/empty_posts"
+           android:visibility="gone"
+           app:layout_constraintBottom_toBottomOf="parent"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintTop_toTopOf="parent" />
+
+
+       <androidx.recyclerview.widget.RecyclerView
+           android:id="@+id/container"
+           android:layout_width="match_parent"
+           android:layout_height="@dimen/common_spacing_0dp"
+           app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+           app:layout_constraintBottom_toBottomOf="parent"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintTop_toTopOf="parent"
+           tools:listitem="@layout/card_post">
+       </androidx.recyclerview.widget.RecyclerView>
+
+
+           <androidx.constraintlayout.widget.Group
+               android:id="@+id/errorGroup"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               app:constraint_referenced_ids="retryTitle, retryButton" />
+
+       <com.google.android.material.floatingactionbutton.FloatingActionButton
+           android:id="@+id/add_post"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_margin="@dimen/common_spacing_4dp"
+           android:contentDescription="@string/post_input_text"
+           app:layout_constraintBottom_toBottomOf="parent"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:srcCompat="@drawable/ic_add_24" />
+
+       <FrameLayout
+           android:id="@+id/fragmentContainer"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:layout_marginTop="?actionBarSize" />
+   </androidx.constraintlayout.widget.ConstraintLayout>
+=> сделал _________________________________________________________________________________________
+
+11. Создаю class SingleLiveEvent<T> : MutableLiveData<T>() {
+               private var pending = false
+               override fun observe(owner: LifecycleOwner, observer: Observer<in T>) {
+                   require(!hasActiveObservers()) {
+                       error("Multiple observes registered but only will be notified of changes.")
+                   }
+
+                   super.observe(owner) {
+                       if (pending) {
+                           pending = false
+                           observer.onChanged(it)
+                       }
+                   }
+               }
+=> сделал _________________________________________________________________________________________
+
+12. Вношу изменения в NewPostFragment
+=> сделал _________________________________________________________________________________________
