@@ -19,7 +19,7 @@ val empty = Post(
     0,
     "authorTest",
     "",
-    "",
+    0L,
     "",
     false,
     0,

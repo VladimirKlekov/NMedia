@@ -138,7 +138,7 @@ class PostDaoImpl(private val db: SQLiteDatabase) : PostDao {
                 author = getString(getColumnIndexOrThrow(PostColumns.COLUMN_AUTHOR)),
                 authorAvatar = getString(getColumnIndexOrThrow(PostColumns.COLUMN_AUTHOR_AVATAR)),
                 content = getString(getColumnIndexOrThrow(PostColumns.COLUMN_CONTENT)),
-                published = getString(getColumnIndexOrThrow(PostColumns.COLUMN_PUBLISHED)),
+                published = getLong(getColumnIndexOrThrow(PostColumns.COLUMN_PUBLISHED)),
                 likedByMe = getInt(getColumnIndexOrThrow(PostColumns.COLUMN_LIKED_BY_ME)) != 0,
                 //!=0 что бы извлечь boolean
                 likes = getLong(getColumnIndexOrThrow(PostColumns.COLUMN_LIKES)),

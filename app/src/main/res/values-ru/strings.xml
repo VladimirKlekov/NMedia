@@ -15,4 +15,7 @@
     <string name="channel_remote_name">Имя удаленного канала</string>
     <string name="channel_remote_description">Уведомления с удаленного сервера</string>
     <string name="google_play_unavailable">google play недоступен</string>
+    <string name="empty_posts">пустой пост</string>
+    <string name="error_loading">ошибка загрузки</string>
+    <string name="retry_loading">повторить попытку</string>
 </resources>

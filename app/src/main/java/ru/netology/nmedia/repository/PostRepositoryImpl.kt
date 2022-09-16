@@ -2,19 +2,14 @@ package ru.netology.nmedia.repository
 
 //ВАРИАНТ PostRepositoryImpl ДЛЯ РАБОТЫ КЛИЕНТ-СЕРВЕРА
 
-import androidx.lifecycle.Transformations
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import ru.netology.nmedia.dao.PostEntity
 import ru.netology.nmedia.dto.Post
-import ru.netology.nmedia.interfaces.PostDaoRoom
 import ru.netology.nmedia.interfaces.PostRepository
-import java.net.URL
 import java.util.concurrent.TimeUnit
 
 class PostRepositoryImpl() : PostRepository {
@@ -24,7 +19,7 @@ class PostRepositoryImpl() : PostRepository {
     //    - Делаю объект с константой, в которой указываю Url нашего сервера
     companion object {
         private const val BASE_URL =
-            "https://10.0.2.2:9999/" //это вариант IP для встроенного эмулятора
+            "http://10.0.2.2:9999" //это вариант IP для встроенного эмулятора
         private val mediaType = "application/json".toMediaType()
     }
 
@@ -57,7 +52,7 @@ class PostRepositoryImpl() : PostRepository {
         val request: Request = Request.Builder()
 //IP из переменной BASE_URL / интерфейс / медленный с 5 сек задеожкой / данные поста
 //api/slow/post - берем из class PostController сервера
-            .url("${BASE_URL}/api/slow/post")
+            .url("${BASE_URL}/api/slow/posts")
             //собрали
             .build()
 //Возвращаю новый запрос
@@ -74,29 +69,21 @@ class PostRepositoryImpl() : PostRepository {
             //формирую временную область видимости для объекта и вызывают код, указанный в переданном лямбда-выражении.
             //
             .let {
+                println()
                 //метод fromJson() преобразует пришедший с сервера ответ в доступную для приложения форму
                 gson.fromJson(it, typeToken.type)
             }
-
-
     }
-
-//________________________________________________________________________________________________//
+    //________________________________________________________________________________________________//
     override fun save(post: Post) {
-               val request: Request = Request.Builder()
+        val request: Request = Request.Builder()
             .post(gson.toJson(post).toRequestBody(mediaType))
-            .url("${BASE_URL}/api/slow/post")
+            .url("${BASE_URL}/api/slow/posts")
             .build()
 
         client.newCall(request)
             .execute()
-
     }
-
-
-//________________________________________________________________________________________________//
-
-
     //хранение истории ввода при выходе из несохраненного поста
     private val textStorages = mutableListOf<String>()
 

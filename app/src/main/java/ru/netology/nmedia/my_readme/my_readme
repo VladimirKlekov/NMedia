@@ -240,3 +240,16 @@ implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
 
 12. Вношу изменения в NewPostFragment
 => сделал _________________________________________________________________________________________
+ viewModel.data.observe(viewLifecycleOwner) { state ->
+            with(binding) {
+                progress.isVisible = state.loading
+                errorGroup.isVisible = state.error
+                emptyText.isVisible = state.empty
+
+            }
+            adapter.submitList(state.posts)
+        }
+
+        binding.retryButton.setOnClickListener {
+            viewModel.load()
+        }
