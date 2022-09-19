@@ -69,7 +69,6 @@ class PostRepositoryImpl() : PostRepository {
             //формирую временную область видимости для объекта и вызывают код, указанный в переданном лямбда-выражении.
             //
             .let {
-                println()
                 //метод fromJson() преобразует пришедший с сервера ответ в доступную для приложения форму
                 gson.fromJson(it, typeToken.type)
             }
@@ -83,14 +82,48 @@ class PostRepositoryImpl() : PostRepository {
 
         client.newCall(request)
             .execute()
+            .close()
     }
     //хранение истории ввода при выходе из несохраненного поста
     private val textStorages = mutableListOf<String>()
 
+    //____________________________________________________________________________________________
+    override fun likeById(id: Long): Post {
 
-    override fun likeById(id: Long) {
-//        dao.likeById(id)
+        val request: Request = Request.Builder()
+            .post(gson.toJson(Unit).toRequestBody(mediaType))
+            .url("${BASE_URL}/api/posts/$id/likes")
+            .build()
+
+        return client.newCall(request)
+            .execute()
+            .let {
+                it.body?.string()?: error("Body is null")
+            }
+            .let {
+                gson.fromJson(it, Post::class.java)
+            }
     }
+
+    override fun unlikeById(id: Long): Post {
+        val request: Request = Request.Builder()
+            .delete()
+            .url("${BASE_URL}/api/posts/$id/likes")
+            .build()
+
+        return client.newCall(request)
+            .execute()
+            .let {
+                it.body?.string()?: error("Body is null")
+            }
+            .let {
+                gson.fromJson(it, Post::class.java)
+            }
+    }
+//    override fun likeById(id: Long) {
+////        dao.likeById(id)
+//    }
+    //____________________________________________________________________________________________//
 
     override fun shareById(id: Long) {
 //        dao.shareById(id)
@@ -102,6 +135,14 @@ class PostRepositoryImpl() : PostRepository {
 
     override fun removeById(id: Long) {
 //        dao.removeById(id)
+        val request: Request = Request.Builder()
+            .delete()
+            .url("${BASE_URL}/api/slow/posts/$id")
+            .build()
+
+        client.newCall(request)
+            .execute()
+            .close()
     }
 
 
@@ -110,7 +151,7 @@ class PostRepositoryImpl() : PostRepository {
     }
 
     override fun textStorageDelete(): String {
-        var transferTex = textStorages.toString()
+        val transferTex = textStorages.toString()
             .replace("[", "")
             .replace("]", "")
         textStorages.clear()

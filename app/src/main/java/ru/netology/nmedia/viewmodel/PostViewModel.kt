@@ -54,16 +54,16 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
 
     fun load() {
         thread {
-            //начинаем загрузку
+            //Начинаем загрузку
             _data.postValue(FeedModel(loading = true))
-            //данные успешно получены
             try {
+                //Данные успешно получены
                 val posts = repository.getAll()
                 FeedModel(posts = posts, empty = posts.isEmpty())
             } catch (e: IOException) {
-//получена ошибка
+                //Получена ошибка
                 FeedModel(error = true)
-            }.also { _data::postValue }
+            }.also(_data::postValue)
         }
     }
 
@@ -84,26 +84,78 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
 
     fun textStorageDelete() = repository.textStorageDelete()
 
-    fun likeById(id: Long) = repository.likeById(id)
+    //_______________________________________________________________________________________________//
+    fun likeById(id: Long) {
+        thread {
+            repository.likeById(id)
+//            _data.postValue(FeedModel(loading = true))
+//            val oldPost = _data.value?.posts.orEmpty().find { it.id == id }
+//            try {
+//                if (oldPost != null) {
+//                    if (!oldPost.likedByMe) {
+//                        val newPost = repository.likeById(id)
+//                    } else {
+//                        repository.unlikeById(id)
+//                    }
+//                }
+//                load()
+//                _data.postValue(FeedModel(loading = false))
+//            } catch (e: Exception) {
+//                _data.postValue(FeedModel(error = true))
+//            }
+        }
+    }
+
+    fun unlikeById(id: Long) {
+        thread { repository.unlikeById(id) }
+    }
+
+
+
+    //fun likeById(id: Long) = repository.likeById(id)
+
+//_______________________________________________________________________________________________//
 
     fun shareById(id: Long) = repository.shareById(id)
 
     fun eye() = repository.eye()
 
-    fun removeById(id: Long) = repository.removeById(id)
-
-    fun editContent(content: String) {
-        edited.value?.let {
-            val trimmed = content.trim()
-            if (edited.value?.content == trimmed) {
-                return
+    //______________________________________________________________________________________________//
+    //fun removeById(id: Long) = repository.removeById(id)
+    fun removeById(id: Long) {
+        thread {
+// Оптимистичная модель
+            val old = data.value?.posts.orEmpty()
+            _data.postValue(
+                _data.value?.copy(posts = _data.value?.posts.orEmpty().filter { it.id != id }
+                )
+            )
+            try {
+                repository.removeById(id)
+            } catch (e: IOException) {
+                _data.postValue(_data.value?.copy(posts = old))
             }
-            edited.value = edited.value?.copy(content = trimmed)
         }
     }
 
+    //_______________________________________________________________________________________________//
+    fun editContent(content: String) {
+
+            edited.value?.let {
+                val trimmed = content.trim()
+                if (edited.value?.content == trimmed) {
+                    return
+                }
+
+                edited.value = edited.value?.copy(content = trimmed)
+            }
+        }
+
+
 
     fun edit(post: Post) {
-        edited.value = post
+
+            edited.value = post
+
     }
 }
