@@ -87,27 +87,40 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     //_______________________________________________________________________________________________//
     fun likeById(id: Long) {
         thread {
-            repository.likeById(id)
-//            _data.postValue(FeedModel(loading = true))
-//            val oldPost = _data.value?.posts.orEmpty().find { it.id == id }
-//            try {
-//                if (oldPost != null) {
-//                    if (!oldPost.likedByMe) {
-//                        val newPost = repository.likeById(id)
-//                    } else {
-//                        repository.unlikeById(id)
-//                    }
-//                }
-//                load()
-//                _data.postValue(FeedModel(loading = false))
-//            } catch (e: Exception) {
-//                _data.postValue(FeedModel(error = true))
-//            }
+            val posts = _data.value?.posts.orEmpty()
+            val updated = repository.likeById(id)
+            _data.postValue(FeedModel(posts = posts.map { if (it.id == id) updated else it }, empty = posts.isEmpty()))
         }
     }
+//    fun likeById(id: Long) {
+//        thread {
+//            repository.likeById(id)
+////            _data.postValue(FeedModel(loading = true))
+////            val oldPost = _data.value?.posts.orEmpty().find { it.id == id }
+////            try {
+////                if (oldPost != null) {
+////                    if (!oldPost.likedByMe) {
+////                        val newPost = repository.likeById(id)
+////                    } else {
+////                        repository.unlikeById(id)
+////                    }
+////                }
+////                load()
+////                _data.postValue(FeedModel(loading = false))
+////            } catch (e: Exception) {
+////                _data.postValue(FeedModel(error = true))
+////            }
+//        }
+//    }
 
     fun unlikeById(id: Long) {
-        thread { repository.unlikeById(id) }
+
+        thread {
+            val posts = _data.value?.posts.orEmpty()
+            val updated = repository.unlikeById(id)
+            _data.postValue(FeedModel(posts = posts.map { if (it.id == id) updated else it }, empty = posts.isEmpty()))
+//            repository.unlikeById(id)
+        }
     }
 
 
