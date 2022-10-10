@@ -16,11 +16,17 @@ import ru.netology.nmedia.databinding.ActivityAppBinding
 
 class AppActivity : AppCompatActivity() {
 
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //____________________________________________________________________________________________//
         val binding = ActivityAppBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
+
 //____________________________________________________________________________________________//
         intent?.let {
             if (it.action != Intent.ACTION_SEND) {
@@ -42,13 +48,13 @@ class AppActivity : AppCompatActivity() {
             intent.removeExtra(Intent.EXTRA_TEXT)
 
             findNavController(R.id.nav_main).navigate(R.id.action_feedFragment_to_newPostFragment,
-            Bundle().apply {
-                textArg = text
+                Bundle().apply {
+                    textArg = text
 //            findNavController(R.id.navigation).navigate(
 //                R.id.action_feedFragment_to_newPostFragment,
 //                Bundle().apply {
 //                    textArg = text
-            }
+                }
             )
         }
         checkGoogleApiAvailability()

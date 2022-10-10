@@ -8,6 +8,7 @@ import android.widget.PopupMenu
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.CardPostBinding
 import ru.netology.nmedia.dto.Post
@@ -39,6 +40,7 @@ class PostAdapter(
     }
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
+
         val post = getItem(position)
         holder.bind(post)
     }
@@ -85,8 +87,28 @@ class PostViewHolder(
             root.setOnClickListener {
                 println("root clicked")
                 listener.onPost(post)
+            }
 
+            val url = "http://10.0.2.2:9999/avatars/${post.authorAvatar}"
+            Glide.with(itemView)
+                .load(url)
+                .placeholder(R.drawable.ic_loading_100dp)
+                .error(R.drawable.ic_error_100dp)
+                .timeout(10_000)
+                .circleCrop()
+                .into(avatar)
 
+            val urlAttachment = "http://10.0.2.2:9999/images/${post.attachment?.url}"
+            if (post.attachment != null) {
+                attachment.visibility = View.VISIBLE
+                Glide.with(itemView)
+                    .load(urlAttachment)
+                    .placeholder(R.drawable.ic_loading_100dp)
+                    .error(R.drawable.ic_error_100dp)
+                    .timeout(10_000)
+                    .into(attachment)
+            } else {
+                attachment.visibility = View.GONE
             }
             menuButton.setOnClickListener {
                 PopupMenu(it.context, it).apply {
@@ -99,6 +121,7 @@ class PostViewHolder(
                                 return@setOnMenuItemClickListener true
                             }
                             R.id.edit -> {
+
                                 listener.onEdit(post)
                                 return@setOnMenuItemClickListener true
                             }

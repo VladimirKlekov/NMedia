@@ -166,5 +166,18 @@
         app:layout_constraintStart_toStartOf="@id/video"
         app:layout_constraintTop_toTopOf="@id/video" />
 
+    <ImageView
+        android:id="@+id/attachment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/common_spacing_16dp"
+        android:adjustViewBounds="true"
+        android:visibility="gone"
+        android:contentDescription="attachment"
+        app:layout_constraintBottom_toTopOf="@+id/barrierMenuButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/content" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
