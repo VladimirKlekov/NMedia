@@ -17,8 +17,6 @@ import ru.netology.nmedia.databinding.ActivityAppBinding
 class AppActivity : AppCompatActivity() {
 
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //____________________________________________________________________________________________//

@@ -26,10 +26,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             //доступ по HTTP только в дебаге
             manifestPlaceholders.usesCleartextTraffic = false
+            buildConfigField "String", "BASE_URL", '"https://nmedia.herokuapp.com"'
         }
         //доступ по HTTP только в дебаге
         debug {
             manifestPlaceholders.usesCleartextTraffic = true
+            buildConfigField "String", "BASE_URL", '"https://10.0.2.2:9999"'
+
 
         }
     }
@@ -54,6 +57,7 @@ def play_services_base_version = "18.1.0"
 def okhttp_version = "4.9.1"
 def glide_version = "4.13.2"
 def picasso_version = "2.71828"
+def retrofit_version = "2.9.0"
 
 dependencies {
 
@@ -77,6 +81,8 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
     implementation "com.github.bumptech.glide:glide:$glide_version"
     implementation "com.squareup.picasso:picasso:$picasso_version"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
