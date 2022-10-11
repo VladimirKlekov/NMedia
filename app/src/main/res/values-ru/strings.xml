@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">НМЕДИА</string>
+    <string name="textAuthor">Нетология. Университет интернет-профессий</string>
+    <string name="textTime">21 мая в 18:36</string>
+    <string name="textPost">Привет учителям Нетологии!!! Я делаю свое первое приложение и пытюсь понять, что здесь и как. Пока все идет со скрипом, но я стараюсь. Как мне кажется, у меня немого получается. Если Вы хотите увидеть, как я постигаю азы пограммирования, то нажмите на ссылку ниже. Буду признателен за критику и Ваши советы.</string>
+    <string name="post_menu_remove">Удалить</string>
+    <string name="post_menu_edit">Редактировать</string>
+    <string name="post_input_text">Текст поста</string>
+    <string name="empty_post_error">Пустой пост</string>
+    <string name="vide_fopr_post">Видео для поста</string>
+    <string name="play_video">Воспроизведение видео</string>
+    <string name="edit_message">Редактирование поста</string>
+    <string name="hello_blank_fragment">Новый фрагмент</string>
+    <string name="channel_remote_name">Имя удаленного канала</string>
+    <string name="channel_remote_description">Уведомления с удаленного сервера</string>
+    <string name="google_play_unavailable">google play недоступен</string>
+    <string name="empty_posts">пустой пост</string>
+    <string name="error_loading">ошибка загрузки</string>
+    <string name="retry_loading">повторить попытку</string>
+    <string name="error_notification_text">Ошибка текста</string>
+    <string name="notification_user_new_posted">Опубликуйте еще раз</string>
+    <string name="notification_user_liked">Пользователь поставли лайк</string>
+
+</resources>
