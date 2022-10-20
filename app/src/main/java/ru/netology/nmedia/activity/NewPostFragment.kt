@@ -6,23 +6,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
-import androidx.core.os.bundleOf
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import ru.netology.nmedia.databinding.FragmentNewPostBinding
 import ru.netology.nmedia.util.AndroidUtils
-import ru.netology.nmedia.viewmodel.PostViewModel
+import ru.netology.nmedia.viewmodel.PostViewModelCoroutine
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
-
 class NewPostFragment : Fragment() {
-
     companion object {
         var Bundle.textArg: String? by StringArg
     }
@@ -31,7 +26,7 @@ class NewPostFragment : Fragment() {
 
     //____________________________________________________________________________________________//
     //представляем ViewModel нескольким активити
-    private val viewModel: PostViewModel by viewModels(
+    private val viewModel: PostViewModelCoroutine by viewModels(
         ownerProducer = ::requireParentFragment
     )
     //____________________________________________________________________________________________//

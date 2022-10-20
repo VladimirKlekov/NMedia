@@ -16,7 +16,8 @@ import ru.netology.nmedia.adapter.PostEventListener
 import ru.netology.nmedia.adapter.PostViewHolder
 import ru.netology.nmedia.databinding.FragmentPostBinding
 import ru.netology.nmedia.dto.Post
-import ru.netology.nmedia.viewmodel.PostViewModel
+
+import ru.netology.nmedia.viewmodel.PostViewModelCoroutine
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -34,7 +35,7 @@ class PostFragment : Fragment() {
     private var param2: String? = null
 //________________________________________________________________________________________________//
 
-    private val viewModel: PostViewModel by viewModels(
+    private val viewModel: PostViewModelCoroutine by viewModels(
         ownerProducer = ::requireParentFragment
     )
 //________________________________________________________________________________________________//

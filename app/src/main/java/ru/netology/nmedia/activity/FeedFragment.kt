@@ -10,68 +10,57 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import ru.netology.nmedia.FeedModel.FeedModelState
 import ru.netology.nmedia.R
 import ru.netology.nmedia.activity.NewPostFragment.Companion.textArg
 import ru.netology.nmedia.adapter.PostAdapter
 import ru.netology.nmedia.adapter.PostEventListener
 import ru.netology.nmedia.databinding.FragmentFeedBinding
 import ru.netology.nmedia.dto.Post
-import ru.netology.nmedia.viewmodel.PostViewModel
-import kotlin.concurrent.fixedRateTimer
+import ru.netology.nmedia.viewmodel.PostViewModelCoroutine
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
 
 class FeedFragment : Fragment() {
-
-    //____________________________________________________________________________________________//
     //представляем ViewModel нескольким активити
-    private val viewModel: PostViewModel by viewModels(
+    private val viewModel: PostViewModelCoroutine by viewModels(
         ownerProducer = ::requireParentFragment
     )
 
-    //____________________________________________________________________________________________//
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        //viewModel.save()
-//____________________________________________________________________________________________//
         val binding: FragmentFeedBinding = FragmentFeedBinding.inflate(
             inflater,
             container,
             false
         )
-
         val adapter = PostAdapter(
             object : PostEventListener {
-
-                //________________________________________________________________________________________________//
-//редактирование поста
+                /** --------------------------------------------------------------------------- **/
                 override fun onEdit(post: Post) {
                     viewModel.edit(post)
                     findNavController().navigate(
                         R.id.action_feedFragment_to_newPostFragment,
                         Bundle().apply {
                             textArg = post.content
+
                         }
                     )
                 }
 
-                //________________________________________________________________________________________________//
-                //удаление поста
+                /** --------------------------------------------------------------------------- **/
                 override fun onRemove(post: Post) {
                     viewModel.removeById(post.id)
                 }
 
-                //________________________________________________________________________________________________//
+                /** --------------------------------------------------------------------------- **/
                 override fun onLike(post: Post) {
-//                    viewModel.likeById(post.id)
                     if (post.likedByMe) {
                         viewModel.unlikeById(post.id)
                     } else {
@@ -80,8 +69,7 @@ class FeedFragment : Fragment() {
                     viewModel.load()
                 }
 
-
-                //________________________________________________________________________________________________//
+                /** --------------------------------------------------------------------------- **/
                 override fun onShare(post: Post) {
                     val intent = Intent().apply {
                         action = Intent.ACTION_SEND
@@ -90,68 +78,49 @@ class FeedFragment : Fragment() {
                     }
                     val shareIntent = Intent.createChooser(intent, "Share post")
                     startActivity(shareIntent)
-
                     viewModel.shareById(post.id)
                 }
 
-                //_________________________________________________________________________________________________//
+                /** --------------------------------------------------------------------------- **/
                 override fun onVideo(post: Post) {
                     val intentVideo = Intent(Intent.ACTION_VIEW, Uri.parse(post.video))
                     startActivity(intentVideo)
                 }
 
-                //_________________________________________________________________________________________________//
+                /** --------------------------------------------------------------------------- **/
                 override fun onPost(post: Post) {
                     val action =
                         FeedFragmentDirections.actionFeedFragmentToPostFragment(post.id.toInt())
                     findNavController().navigate(action)
                 }
-
             }
         )
-//____________________________________________________________________________________________//
+        /** ----------------------------------------------------------------------------------- **/
         binding.container.adapter = adapter
-
-//____________________________________________________________________________________________//
+        /** ----------------------------------------------------------------------------------- **/
         viewModel.data.observe(viewLifecycleOwner) { state ->
-            with(binding) {
-                progress.isVisible = state.loading
-                errorGroup.isVisible = state.error
-                emptyText.isVisible = state.empty
-
-            }
             adapter.submitList(state.posts)
+            binding.emptyText.isVisible = state.empty
+        }
+        viewModel.state.observe(viewLifecycleOwner) { state ->
+            binding.progress.isVisible = state is FeedModelState.Loading
+            binding.errorGroup.isVisible = state is FeedModelState.Error
         }
 
+        /** ----------------------------------------------------------------------------------- **/
         binding.retryButton.setOnClickListener {
             viewModel.load()
         }
 
-//____________________________________________________________________________________________//
+        /** ---------------------------------------------------------------------------------- **/
         binding.addPost.setOnClickListener {
-            //val args = NewPostFragmentArgs.Builder().setContent("111").build()
-//            var textCopyFragment =""
-
-//             var x = setFragmentResultListener("keyTextCopyFragment") { key, bundle ->
-//                // Здесь можно передать любой тип, поддерживаемый Bundle-ом
-//              textCopyFragment = bundle.getString("bundleKey").toString()
-//
-//             }
             val action = FeedFragmentDirections.actionFeedFragmentToNewPostFragment("111")
             findNavController().navigate(action)
-
-//            newPostContract.launch()
         }
-
-        //____________________________________________________________________________________________//
-
-//        parentFragmentManager.beginTransaction()
-//            .replace(R.id.nav_main, PostFragment.newInstance("1", "2")).commit()
-
-//____________________________________________________________________________________________//
         return binding.root
     }
 
+    /** -------------------------------------------------------------------------------------- **/
     //вспомогательный объект для передачи данных  между фрагментами
     companion object {
 
@@ -176,13 +145,13 @@ class FeedFragment : Fragment() {
         }
     }
 
-    object StringArgText : ReadWriteProperty<Bundle, String?> {
-        override fun getValue(thisRef: Bundle, property: KProperty<*>): String? {
-            return thisRef.getString(property.name)
-        }
-
-        override fun setValue(thisRef: Bundle, property: KProperty<*>, value: String?) {
-            thisRef.putString(property.name, value)
-        }
-    }
+//    object StringArgText : ReadWriteProperty<Bundle, String?> {
+//        override fun getValue(thisRef: Bundle, property: KProperty<*>): String? {
+//            return thisRef.getString(property.name)
+//        }
+//
+//        override fun setValue(thisRef: Bundle, property: KProperty<*>, value: String?) {
+//            thisRef.putString(property.name, value)
+//        }
+//    }
 }

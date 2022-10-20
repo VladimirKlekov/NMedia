@@ -121,7 +121,6 @@ class PostViewHolder(
                                 return@setOnMenuItemClickListener true
                             }
                             R.id.edit -> {
-
                                 listener.onEdit(post)
                                 return@setOnMenuItemClickListener true
                             }

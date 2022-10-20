@@ -19,7 +19,6 @@
     <string name="error_loading">ошибка загрузки</string>
     <string name="retry_loading">повторить попытку</string>
     <string name="error_notification_text">Ошибка текста</string>
-    <string name="notification_user_new_posted">Опубликуйте еще раз</string>
-    <string name="notification_user_liked">Пользователь поставли лайк</string>
+
 
 </resources>
