@@ -60,6 +60,7 @@ def glide_version = "4.13.2"
 def picasso_version = "2.71828"
 def retrofit_version = "2.9.0"
 def coroutines_version = '1.6.4'
+def okhttplogging_version = "4.10.0"
 
 dependencies {
 
@@ -82,6 +83,7 @@ dependencies {
     implementation "com.google.firebase:firebase-messaging-ktx"
     implementation "com.google.android.gms:play-services-base:$play_services_base_version"
     implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttplogging_version"
     implementation "com.github.bumptech.glide:glide:$glide_version"
     implementation "com.squareup.picasso:picasso:$picasso_version"
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"

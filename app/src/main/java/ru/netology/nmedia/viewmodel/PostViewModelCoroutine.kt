@@ -15,8 +15,7 @@ import ru.netology.nmedia.singleLiveEvent.SingleLiveEvent
 //заглушка
 val empty = Post(
     0,
-    "authorTest",
-    "",
+    1,
     0L,
     "",
     false,
