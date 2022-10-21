@@ -52,7 +52,7 @@ class PostViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(post: Post) {
         binding.apply {
-            author.text = post.authorId.toString()
+            author.text = post.author.toString()
             published.text = post.published.toString()
             content.text = post.content
             like.text = CountLikeShare.roundingCount(post.likes)
@@ -89,14 +89,14 @@ class PostViewHolder(
                 listener.onPost(post)
             }
 
-//            val url = "http://10.0.2.2:9999/avatars/${post.authorAvatar}"
-//            Glide.with(itemView)
-//                .load(url)
-//                .placeholder(R.drawable.ic_loading_100dp)
-//                .error(R.drawable.ic_error_100dp)
-//                .timeout(10_000)
-//                .circleCrop()
-//                .into(avatar)
+            val url = "http://10.0.2.2:9999/avatars/${post.authorAvatar}"
+            Glide.with(itemView)
+                .load(url)
+                .placeholder(R.drawable.ic_loading_100dp)
+                .error(R.drawable.ic_error_100dp)
+                .timeout(10_000)
+                .circleCrop()
+                .into(avatar)
 
             val urlAttachment = "http://10.0.2.2:9999/images/${post.attachment?.url}"
             if (post.attachment != null) {

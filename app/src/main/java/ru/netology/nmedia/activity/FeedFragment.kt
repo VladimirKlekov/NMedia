@@ -145,13 +145,13 @@ class FeedFragment : Fragment() {
         }
     }
 
-//    object StringArgText : ReadWriteProperty<Bundle, String?> {
-//        override fun getValue(thisRef: Bundle, property: KProperty<*>): String? {
-//            return thisRef.getString(property.name)
-//        }
-//
-//        override fun setValue(thisRef: Bundle, property: KProperty<*>, value: String?) {
-//            thisRef.putString(property.name, value)
-//        }
-//    }
+    object StringArgText : ReadWriteProperty<Bundle, String?> {
+        override fun getValue(thisRef: Bundle, property: KProperty<*>): String? {
+            return thisRef.getString(property.name)
+        }
+
+        override fun setValue(thisRef: Bundle, property: KProperty<*>, value: String?) {
+            thisRef.putString(property.name, value)
+        }
+    }
 }

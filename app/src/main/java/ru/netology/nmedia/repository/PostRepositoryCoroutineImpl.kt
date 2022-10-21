@@ -48,6 +48,7 @@ class PostRepositoryCoroutineImpl(private val postDao: PostDaoCoroutine) : PostR
         } catch (e: IOException) {
             throw NetworkException
         } catch (e: Exception) {
+            e.stackTrace
             throw UnknownException
         }
     }

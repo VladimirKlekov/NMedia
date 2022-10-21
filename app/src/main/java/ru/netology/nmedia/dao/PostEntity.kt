@@ -11,8 +11,8 @@ data class PostEntity(
 //аннотацией указали что id будет генерироваться автоматически
     @PrimaryKey(autoGenerate = true)
     val id: Long,
-    val authorId: Long,
-    //val authorAvatar: String,
+    val author: String,
+    val authorAvatar: String,
     val published: Long,
     val content: String,
     val likedByMe: Boolean,
@@ -28,12 +28,12 @@ data class PostEntity(
 
         fun fromDto(dto: Post) =
             PostEntity(
-                dto.id, dto.authorId,  dto.published, dto.content,
+                dto.id, dto.author, dto.authorAvatar,  dto.published, dto.content,
                 dto.likedByMe, dto.likes, dto.share, dto.eye
             )
     }
 
-    fun toDto() = Post(id, authorId, published, content, likedByMe, likes, share, eye)
+    fun toDto() = Post(id, author, authorAvatar, published, content, likedByMe, likes, share, eye)
 }
 fun List<PostEntity>.toDto() = map { it.toDto() }
 fun List<Post>.toEntity() = map { PostEntity.fromDto(it) }
