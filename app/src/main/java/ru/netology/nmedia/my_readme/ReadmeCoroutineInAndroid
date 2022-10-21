@@ -1,0 +1,70 @@
+------------COROUTINE IN ANDROID----------------------------------------------------------------
+
+1. Что бы начали работать нужно подгрузить бибилотеку
+implementation "org.jetbnains.kotlinx:kotlinx-conoutines-android:$coroutines_version
+
+2.Retrofit уже интегрирован с корутинами, поэтому нам достаточно добавить модификатор suspend к функциям:
+Пример: interface PostsApiService {
+        @GET (value: "posts")
+        suspend fun getAll(): List<Post>
+        --------
+        }
+3.Вопрос: какие требования мы должны выполнить, чтобы иметь возможность вызывать suspend-функции (например, из репозитория)?
+Вариантов у нас всего два:
+1.	Либо функции репозитория, в которых мы вызываем функции Retrofit, должны быть тоже suspend-функциями
+2.	Либо мы прямо в репозитории создаём корутины и в них уже можем вызывать suspend-функции (вспоминайте Coroutine Builders)
+Возникает вопрос: какой вариант выбрать?
+
+Мы не зря рассматривали Cancellation на прошлой лекции: хотелось бы из коробки получить решение,
+которое его нам предоставит, исходя из LifeCycle «сущностей» Android.
+Напоминаем, одними из ключевых являются: Activity и ViewModel.
+Это значит, что мы можем просто в Repository использовать suspend-функции, а задачи по предоставлению
+Scope переложить на ViewModel/Activityj
+
+т.е. в интерфейсе просто пишем, что функия suspend, а в репозитории просто переопределяем их
+
+______
+Пояснение: Retrofit и Room уже интегрированы с корутинами, поэтому вызовы их функций являются Main Safe
+(т.е. допустимыми для вызова из главного потока на Dispatchers.Main). Но при этом важно помнить:
+если вы интегрируетесь с другими библиотеками (не поддерживающими корутины), либо выполняете CPU/IO
+в функциях, то нужно делать собственные функции Main Safe явно с помощью withContext.
+_______
+
+3.Вносим изменения во viewModel
+В самой библиотеке корутин есть готовая функция MainScope, которая предоставляет нам Scope с SupervisorJob и Dispatchers.Main:
+
+Соответственно, мы можем напрямую его использовать в нашей ViewModel:
+
+class PostViewModel(application: Application) : AndroidViewModel(application) {
+// упрощённый вариант
+private val repository: PostRepository = PostRepositorylmpl()
+private val scope = MainScope()
+-------------------------------
+fun loadPost() {
+data.value = FeedModel(loading = true)
+scope.launch { this:CoroutineScope val posts = repository.getAll()
+-------------
+_data.value = FeedModel(posts = posts, empty = posts.isEmpty())
+}
+
+override fun onCleared() {
+super. onCleared()
+scope.cancel()
+--------------
+много текста и кода, но в итоге viewModel упрощается до такого кода:
+fun loadPostsO {
+_data.value = FeedModel(loading = true)
+viewModelScope.launch { this:CoroutineScope
+val posts = repository.getAtl()
+_data.value = FeedMode(posts = posts, empty = posts.isEmpty())
+}
+
+----ПОЯСНЕНИЕ-------
+Стоит отметить, что для LifecycleOwner'oB (например, Activity и Fragment'oB) доступен также Scope,
+привязанный к жизненному циклу:
+CoroutineScope tied to this LifecycleOwner's Lifecycle.
+This scope will be cancelled when the Lifecycle is destroyed.
+This scope is bound to Dispatchers.Main.immediate.
+val LifecycleOwner.li/ecycleScope: LifecycleCoroutineScope getO = lifecycle.coroutineScope
+---------------------
+
