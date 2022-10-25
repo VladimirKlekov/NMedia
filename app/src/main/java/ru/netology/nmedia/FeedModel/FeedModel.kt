@@ -8,9 +8,17 @@ data class FeedModel(
     )
 
 /** интерфейс, чтобы подгружались посты, которые были написаны в предыдущю сессию------------ **/
-sealed interface FeedModelState {
-    object Idle : FeedModelState
-    object Loading : FeedModelState
-    object Refresh : FeedModelState
-    object Error : FeedModelState
-}
+
+data class FeedModelState(
+val refreshing: Boolean = false,
+val error: Boolean = false,
+val loading: Boolean = false)
+
+//sealed interface FeedModelState {
+//    object Idle : FeedModelState
+//    object Loading : FeedModelState
+//    object Refresh : FeedModelState
+//    object Error : FeedModelState
+//
+//
+//}

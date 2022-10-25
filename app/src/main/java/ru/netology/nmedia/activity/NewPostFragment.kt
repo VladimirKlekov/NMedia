@@ -13,7 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import ru.netology.nmedia.databinding.FragmentNewPostBinding
 import ru.netology.nmedia.util.AndroidUtils
-import ru.netology.nmedia.viewmodel.PostViewModelCoroutine
+import ru.netology.nmedia.viewmodel.PostViewModel
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
@@ -26,7 +26,7 @@ class NewPostFragment : Fragment() {
 
     //____________________________________________________________________________________________//
     //представляем ViewModel нескольким активити
-    private val viewModel: PostViewModelCoroutine by viewModels(
+    private val viewModel: PostViewModel by viewModels(
         ownerProducer = ::requireParentFragment
     )
     //____________________________________________________________________________________________//

@@ -19,14 +19,14 @@ import ru.netology.nmedia.adapter.PostAdapter
 import ru.netology.nmedia.adapter.PostEventListener
 import ru.netology.nmedia.databinding.FragmentFeedBinding
 import ru.netology.nmedia.dto.Post
-import ru.netology.nmedia.viewmodel.PostViewModelCoroutine
+import ru.netology.nmedia.viewmodel.PostViewModel
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
 
 class FeedFragment : Fragment() {
     //представляем ViewModel нескольким активити
-    private val viewModel: PostViewModelCoroutine by viewModels(
+    private val viewModel: PostViewModel by viewModels(
         ownerProducer = ::requireParentFragment
     )
 
@@ -103,8 +103,8 @@ class FeedFragment : Fragment() {
             binding.emptyText.isVisible = state.empty
         }
         viewModel.state.observe(viewLifecycleOwner) { state ->
-            binding.progress.isVisible = state is FeedModelState.Loading
-            binding.errorGroup.isVisible = state is FeedModelState.Error
+            binding.progress.isVisible = state is FeedModelState
+            binding.errorGroup.isVisible = state is FeedModelState
         }
 
         /** ----------------------------------------------------------------------------------- **/
@@ -117,6 +117,30 @@ class FeedFragment : Fragment() {
             val action = FeedFragmentDirections.actionFeedFragmentToNewPostFragment("111")
             findNavController().navigate(action)
         }
+
+        /** -------добавляю для flow--------------------------------------------------------------- **/
+        //подписываюсь на поток
+        viewModel.newerCount.observe(viewLifecycleOwner) {
+            //будем выводит информацию в консоль, сколько постов имеется
+            if (it >= 1) {
+                binding.notificationNewPostsButton.visibility = View.VISIBLE
+                binding.count.text = it.toString()
+            }
+            //TODO ДЗ отражение сделать в домашней работе
+            println("Newer count: $it")
+        }
+
+        binding.notificationNewPostsButton.setOnClickListener {
+            binding.notificationNewPostsButton.visibility = View.GONE
+            binding.notificationGroup.visibility = View.VISIBLE
+
+        }
+        binding.notificationNewerPostCountButton.setOnClickListener {
+            binding.notificationGroup.visibility = View.GONE
+            //TODO
+        }
+
+        /** -------------------------------------------------------------------------------------- **/
         return binding.root
     }
 

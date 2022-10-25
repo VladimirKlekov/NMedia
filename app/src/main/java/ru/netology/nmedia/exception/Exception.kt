@@ -1,10 +1,32 @@
 package ru.netology.nmedia.exception
 
+import java.io.IOException
+import java.sql.SQLException
 
-sealed class AppError(private val code: String) : RuntimeException()
+/** -------добавляю для flow--------------------------------------------------------------- **/
+
+sealed class AppError(var code: String) : RuntimeException() {
+    companion object {
+        fun from(e: Throwable): AppError = when (e) {
+            is AppError -> e
+            is SQLException -> DbError
+            is IOException -> NetworkError
+            else -> UnknownError
+        }
+    }
+}
 
 class ApiError(val status: Int, code: String) : AppError(code)
+object NetworkError : AppError("error_network")
+object DbError : AppError("error_db")
+object UnknownError : AppError("error_unknown")
+/** -------добавляю для flow--------------------------------------------------------------- **/
 
-object NetworkException : AppError("error_network")
 
-object UnknownException : AppError("error_unknown")
+//sealed class AppError(private val code: String) : RuntimeException()
+//
+//class ApiError(val status: Int, code: String) : AppError(code)
+//
+//object NetworkException : AppError("error_network")
+//
+//object UnknownException : AppError("error_unknown")

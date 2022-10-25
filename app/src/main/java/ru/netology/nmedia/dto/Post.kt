@@ -8,11 +8,11 @@ data class Post(
     val published: Long,
     val content: String,
     val likedByMe: Boolean,
-
     val likes: Long,
     val share:Long,
     var eye:Long,
     val video: String? = null,
+    val visibility:Boolean = true,
 
     val attachment: Attachment? = null
 

@@ -28,11 +28,6 @@ private val okhttp = OkHttpClient.Builder()
     .addInterceptor(logging)
     .build()
 
-//private val retrofit = Retrofit.Builder()
-//    .addConverterFactory(GsonConverterFactory.create())
-//    .baseUrl(BASE_URL)
-//    .client(okhttp)
-//    .build()
 
 private val retrofit = Retrofit.Builder()
     .addConverterFactory(GsonConverterFactory.create())
@@ -40,7 +35,7 @@ private val retrofit = Retrofit.Builder()
     .baseUrl(BASE_URL)
     .build()
 
-interface PostsApiServiceCoroutine {
+interface PostsApiService {
     @GET("posts")
     suspend fun getAll(): Response<List<Post>>
 
@@ -58,11 +53,16 @@ interface PostsApiServiceCoroutine {
 
     @DELETE("posts/{id}")
     suspend fun removeById(@Path("id") id: Long): Response<Unit>
+
+    /** -------добавляю для flow--------------------------------------------------------------- **/
+    @GET("posts/{id}/newer")
+    suspend fun getNewer(@Path("id") id: Long): Response<List<Post>>
+    /** --------------------------------------------------------------------------------------- **/
 }
 
 object PostsApi {
-    val service: PostsApiServiceCoroutine by lazy {
-        retrofit.create(PostsApiServiceCoroutine::class.java)
+    val service: PostsApiService by lazy {
+        retrofit.create(PostsApiService::class.java)
     }
 }
 

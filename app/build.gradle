@@ -31,6 +31,11 @@ android {
         //доступ по HTTP только в дебаге
         debug {
             manifestPlaceholders.usesCleartextTraffic = true
+
+            //доступ к телефону по id
+            //buildConfigField "String", "BASE_URL", '"https://192.168.1.105:9999"'
+
+            //доступ к эмулятору по id
             buildConfigField "String", "BASE_URL", '"https://10.0.2.2:9999"'
 
 

@@ -2,13 +2,16 @@ package ru.netology.nmedia.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import ru.netology.nmedia.FeedModel.FeedModel
 import ru.netology.nmedia.FeedModel.FeedModelState
-import ru.netology.nmedia.databases.AppDbCoroutine
+import ru.netology.nmedia.databases.AppDb
 import ru.netology.nmedia.dto.Post
-import ru.netology.nmedia.interfaces.PostRepositoryCoroutine
-import ru.netology.nmedia.repository.PostRepositoryCoroutineImpl
+import ru.netology.nmedia.interfaces.PostRepository
+import ru.netology.nmedia.repository.PostRepositoryImpl
 import ru.netology.nmedia.singleLiveEvent.SingleLiveEvent
 
 
@@ -26,19 +29,32 @@ val empty = Post(
 )
 
 /** ------------------------------------------------------------------------------------------ **/
-class PostViewModelCoroutine(application: Application) : AndroidViewModel(application) {
-    private val repository: PostRepositoryCoroutine = PostRepositoryCoroutineImpl(
-        AppDbCoroutine.getInstance(context = application).postDao()
+class PostViewModel(application: Application) : AndroidViewModel(application) {
+
+    private val repository: PostRepository = PostRepositoryImpl(
+        AppDb.getInstance(context = application).postDao()
     )
 
     private val _data = MutableLiveData<FeedModel>()
-    val data: LiveData<FeedModel> = repository.data.map {
-        FeedModel(it, it.isEmpty())
-        /** тоже самое **/
-//            val data: LiveData<FeedModel>
-//            get() = repository.data.map {
-//                FeedModel(it,it.isEmpty())
+
+    /** -------добавляю для flow--------------------------------------------------------------- **/
+    val data: LiveData<FeedModel> = repository.data.map(::FeedModel)
+        //.catch {e -> e.printStackTrace() }
+        .asLiveData(Dispatchers.Default)
+
+    //делаю подписку на функцию списка непрочитанных постов
+    val newerCount: LiveData<Int> = data.switchMap {
+        repository.getNewerCount(it.posts.firstOrNull()?.id ?: 0L)
+            .asLiveData(Dispatchers.Default)
     }
+
+
+    /** --------------------------------------------------------------------------------------- **/
+
+
+//    val data: LiveData<FeedModel> = repository.data.map {
+//        FeedModel(it, it.isEmpty())
+//            }
 
     private val _state = MutableLiveData<FeedModelState>()
     val state: MutableLiveData<FeedModelState>
@@ -57,19 +73,31 @@ class PostViewModelCoroutine(application: Application) : AndroidViewModel(applic
 
     fun load() {
         viewModelScope.launch {
-            _state.value = FeedModelState.Loading
+            _state.value = FeedModelState(loading = true)
 
             try {
                 repository.getAll()
                 //в случае успеха буду создавать FeedModel
-                _state.value = FeedModelState.Idle
+                _state.value = FeedModelState()
             } catch (e: Exception) {
-                _state.value = FeedModelState.Error
+                _state.value = FeedModelState(error = true)
             }
         }
     }
 
     /** --------------------------------------------------------------------------------------- **/
+    fun loadNewPosts() = viewModelScope.launch {
+        try {
+            _state.value = FeedModelState(loading = true)
+            repository.getNewPosts()
+            _state.value = FeedModelState()
+        } catch (e: Exception) {
+            _state.value = FeedModelState(error = true)
+        }
+    }
+
+
+
     fun save() {
         viewModelScope.launch {
             edited.value?.let {
