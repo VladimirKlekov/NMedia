@@ -23,8 +23,6 @@ class AppActivity : AppCompatActivity() {
         val binding = ActivityAppBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-
 //____________________________________________________________________________________________//
         intent?.let {
             if (it.action != Intent.ACTION_SEND) {

@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import ru.netology.nmedia.FeedModel.FeedModel
 import ru.netology.nmedia.FeedModel.FeedModelState
+import ru.netology.nmedia.api.PostsApi
 import ru.netology.nmedia.databases.AppDb
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.interfaces.PostRepository
@@ -49,6 +50,17 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     }
 
 
+
+
+    fun loadNewPosts() = viewModelScope.launch {
+        try {
+            _state.value = FeedModelState(loading = true)
+            repository.getNewPosts()
+            _state.value = FeedModelState()
+        } catch (e: Exception) {
+            _state.value = FeedModelState(error = true)
+        }
+    }
     /** --------------------------------------------------------------------------------------- **/
 
 
@@ -76,7 +88,8 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
             _state.value = FeedModelState(loading = true)
 
             try {
-                repository.getAll()
+                repository.getNewPosts()
+//                repository.getAll()
                 //в случае успеха буду создавать FeedModel
                 _state.value = FeedModelState()
             } catch (e: Exception) {
@@ -86,15 +99,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     /** --------------------------------------------------------------------------------------- **/
-    fun loadNewPosts() = viewModelScope.launch {
-        try {
-            _state.value = FeedModelState(loading = true)
-            repository.getNewPosts()
-            _state.value = FeedModelState()
-        } catch (e: Exception) {
-            _state.value = FeedModelState(error = true)
-        }
-    }
+
 
 
 

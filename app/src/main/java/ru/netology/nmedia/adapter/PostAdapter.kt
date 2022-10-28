@@ -81,9 +81,6 @@ class PostViewHolder(
             play.setOnClickListener {
                 listener.onVideo(post)
             }
-            video.setOnClickListener {
-                listener.onVideo(post)
-            }
             root.setOnClickListener {
                 println("root clicked")
                 listener.onPost(post)

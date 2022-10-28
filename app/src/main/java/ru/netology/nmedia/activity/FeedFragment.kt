@@ -103,8 +103,9 @@ class FeedFragment : Fragment() {
             binding.emptyText.isVisible = state.empty
         }
         viewModel.state.observe(viewLifecycleOwner) { state ->
-            binding.progress.isVisible = state is FeedModelState
-            binding.errorGroup.isVisible = state is FeedModelState
+            binding.progress.isVisible = state.loading
+            binding.errorGroup.isVisible = state.error
+            binding.swipeRefresh.isRefreshing = state.refreshing
         }
 
         /** ----------------------------------------------------------------------------------- **/
@@ -134,10 +135,12 @@ class FeedFragment : Fragment() {
             binding.notificationNewPostsButton.visibility = View.GONE
             binding.notificationGroup.visibility = View.VISIBLE
 
+
         }
         binding.notificationNewerPostCountButton.setOnClickListener {
             binding.notificationGroup.visibility = View.GONE
-            //TODO
+            binding.container.smoothScrollToPosition(0)
+            viewModel.loadNewPosts()
         }
 
         /** -------------------------------------------------------------------------------------- **/
