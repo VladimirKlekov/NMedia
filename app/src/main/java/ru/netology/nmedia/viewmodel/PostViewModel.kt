@@ -3,6 +3,7 @@ package ru.netology.nmedia.viewmodel
 import android.app.Application
 import androidx.lifecycle.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -50,24 +51,17 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     }
 
 
-
-
     fun loadNewPosts() = viewModelScope.launch {
         try {
             _state.value = FeedModelState(loading = true)
-            repository.getNewPosts()
+            repository.getAll()
             _state.value = FeedModelState()
         } catch (e: Exception) {
             _state.value = FeedModelState(error = true)
         }
     }
+
     /** --------------------------------------------------------------------------------------- **/
-
-
-//    val data: LiveData<FeedModel> = repository.data.map {
-//        FeedModel(it, it.isEmpty())
-//            }
-
     private val _state = MutableLiveData<FeedModelState>()
     val state: MutableLiveData<FeedModelState>
         get() = _state
@@ -89,8 +83,6 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
 
             try {
                 repository.getNewPosts()
-//                repository.getAll()
-                //в случае успеха буду создавать FeedModel
                 _state.value = FeedModelState()
             } catch (e: Exception) {
                 _state.value = FeedModelState(error = true)
@@ -99,10 +91,6 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     /** --------------------------------------------------------------------------------------- **/
-
-
-
-
     fun save() {
         viewModelScope.launch {
             edited.value?.let {
@@ -154,7 +142,6 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
             return
         }
         edited.value = edited.value?.copy(content = trimmed)
-        // }
     }
 
     /** --------------------------------------------------------------------------------------- **/

@@ -134,13 +134,16 @@ class FeedFragment : Fragment() {
         binding.notificationNewPostsButton.setOnClickListener {
             binding.notificationNewPostsButton.visibility = View.GONE
             binding.notificationGroup.visibility = View.VISIBLE
-
-
         }
+
         binding.notificationNewerPostCountButton.setOnClickListener {
             binding.notificationGroup.visibility = View.GONE
             binding.container.smoothScrollToPosition(0)
             viewModel.loadNewPosts()
+              }
+
+        binding.swipeRefresh.setOnRefreshListener {
+            viewModel.load()
         }
 
         /** -------------------------------------------------------------------------------------- **/

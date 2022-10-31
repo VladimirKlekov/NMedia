@@ -21,12 +21,3 @@ object NetworkError : AppError("error_network")
 object DbError : AppError("error_db")
 object UnknownError : AppError("error_unknown")
 /** -------добавляю для flow--------------------------------------------------------------- **/
-
-
-//sealed class AppError(private val code: String) : RuntimeException()
-//
-//class ApiError(val status: Int, code: String) : AppError(code)
-//
-//object NetworkException : AppError("error_network")
-//
-//object UnknownException : AppError("error_unknown")

@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
+import ru.netology.nmedia.Entity.PostEntity
 import ru.netology.nmedia.dto.Post
 
 
@@ -16,10 +17,8 @@ interface PostDao {
 
     @Query("SELECT * FROM PostEntity WHERE Visibility = 1 ORDER BY id DESC")
     fun getVisibility(): Flow<List<PostEntity>>
-    /** --------------------------------------------------------------------------------------- **/
 
-//    @Query("SELECT * FROM PostEntity ORDER BY id DESC")
-//    fun getAll(): LiveData<List<PostEntity>>
+    /** --------------------------------------------------------------------------------------- **/
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(post: PostEntity)

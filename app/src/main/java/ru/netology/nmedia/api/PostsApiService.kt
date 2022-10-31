@@ -35,6 +35,7 @@ private val retrofit = Retrofit.Builder()
     .baseUrl(BASE_URL)
     .build()
 
+//запросы на сервер
 interface PostsApiService {
     @GET("posts")
     suspend fun getAll(): Response<List<Post>>
@@ -55,6 +56,7 @@ interface PostsApiService {
     suspend fun removeById(@Path("id") id: Long): Response<Unit>
 
     /** -------добавляю для flow--------------------------------------------------------------- **/
+    //@GET("posts/{id}/newer") - выдай все новые посты
     @GET("posts/{id}/newer")
     suspend fun getNewer(@Path("id") id: Long): Response<List<Post>>
     /** --------------------------------------------------------------------------------------- **/

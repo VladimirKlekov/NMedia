@@ -7,10 +7,12 @@ interface PostRepository {
     /** -------добавляю для flow--------------------------------------------------------------- **/
     //выполнить операцию на другом потоке
     val data: Flow<List<Post>>
+
     //делаю новую функцию для получения информации, сколько постов не прочитано
     //firstId:Long - это id первого поста
-    fun getNewerCount(firstId:Long):Flow<Int>
+    fun getNewerCount(firstId: Long): Flow<Int>
     suspend fun getNewPosts()
+
     /** --------------------------------------------------------------------------------------- **/
 
 //    val data: LiveDate<List<Post>>

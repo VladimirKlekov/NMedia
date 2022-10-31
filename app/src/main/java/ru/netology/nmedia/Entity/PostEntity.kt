@@ -1,4 +1,4 @@
-package ru.netology.nmedia.dao
+package ru.netology.nmedia.Entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -22,7 +22,6 @@ data class PostEntity(
     val visibility: Boolean = true,
     val video: String? = null
 ) {
-
 
     companion object {
 

@@ -16,7 +16,6 @@ import ru.netology.nmedia.databinding.ActivityAppBinding
 
 class AppActivity : AppCompatActivity() {
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //____________________________________________________________________________________________//
@@ -31,13 +30,6 @@ class AppActivity : AppCompatActivity() {
 //____________________________________________________________________________________________//
             val text = it.getStringExtra(Intent.EXTRA_TEXT)
             if (text?.isNullOrBlank()!=true) {
-
-
-//                Snackbar.make(binding.root, "Content can't be empty", LENGTH_INDEFINITE)
-//                    .setAction(android.R.string.ok) {
-//                        finish()
-//                    }
-//                    .show()
                 return@let
             }
 
@@ -46,10 +38,6 @@ class AppActivity : AppCompatActivity() {
             findNavController(R.id.nav_main).navigate(R.id.action_feedFragment_to_newPostFragment,
                 Bundle().apply {
                     textArg = text
-//            findNavController(R.id.navigation).navigate(
-//                R.id.action_feedFragment_to_newPostFragment,
-//                Bundle().apply {
-//                    textArg = text
                 }
             )
         }

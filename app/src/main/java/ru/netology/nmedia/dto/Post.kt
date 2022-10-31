@@ -15,7 +15,6 @@ data class Post(
     val visibility:Boolean = true,
 
     val attachment: Attachment? = null
-
 )
 
 
