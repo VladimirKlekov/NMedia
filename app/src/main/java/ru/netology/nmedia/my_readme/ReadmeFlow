@@ -1,0 +1,127 @@
+--------ТЕМА FLOW-----------------------------------------
+
+1. Давайте детальнее разберёмся с тем, что такое LiveData.
+LiveData - это value holder (т.е. объект, содержащий какое-то значение), реализующий Observerable
+(то, на обновления чего можно подписаться) с учётом жизненного цикла Observer'a (того, кто подписывается).
+___
+LiveData — это класс для хранения данных, который работает по принципу шаблона Observer (наблюдатель),
+т.е, этот класс позволяет отслеживать изменение данных.
+
+/** ------------------------------------------------------------------------------------------ **/
+FLOW
+Flow это класс из библиотеки Kotlin Coroutines представленной в 2019 году, класс является потоком
+значений, вычисляемый асинхронно. Концептуально похож на RxJava Observable, но основан на корутинах
+и имеет более простой API.
+Нам нужен инструмент, который удовлетворял бы следующим требованиям:
+•	как «LiveData» (можно и функциональнее);
+•	позволяет работать не только в Main Thread;
+•	интегрирован с библиотеками (Room).
+
+2.SINGLE VALUE vs STREAM
+  Напомним, что мы пока умеем возвращать с помощью корутин всего лишь одно значение (даже если оно представлено в виде списка).
+  Нас интересует возможность возвращать Stream (поток) значений, на который можно подписываться
+  (async/await также возвращает одно значение).
+  —0-  —I—►  время, t
+  поток значений, распределённый во времени
+3.Библиотека корутин предлагает Flow - асинхронный поток данных, который последовательно «эмитирует»
+значения и завершается либо нормально, либо с ошибкой (исключением).
+  Другими словами, Flow - это Sequence с распределёнными по времени значениями, который такж
+  е поддерживает Structured Concurrency.
+ Вспоминаем: ни одна операция в Sequence не выполняется, пока не будет вызван терминальный оператор.
+ С Flow также: пока не будет вызван один из операторов (collect, single, reduce, toList и т.д.), значения во Flow не будут поступать.
+Помимо терминальных операторов предоставляются и промежуточные (аналоги Sequence, но с учётом специфики распределённости во времени).
+4.Есть специализированные реализации Flow вроде StateFlow. SharedFlow. которые позволяют «изменить»
+ поведение Flow. Например, выступать в качестве data holder'a или из cold превратиться в hot и
+ рассылать одни и те же данные всем коллекторам.
+
+
+-------------------действия--------------------------------------------
+1.в interface PostsApiService добавляем функцию
+ @GET("*posts/{id}/newer")
+    suspend fun getNewer(@Path("id") id: Long): Response<List<Post>>
+
+2.в interface PostDao в функции getAll меняю LiveDate на Flow (kotlin.coroutines.flow)
+@Query("SELECT * FROM PostEntity ORDER BY id DESC")
+    fun getAll(): Flow<List<PostEntity>>
+
+3.В репозитории  PostRepositoryImpl внишу изменения для получения на другом потоке
+//выполнить операцию на другом потоке
+    override val data = postDao.getAll().map(List<PostEntity>::toDto).flowOn(Dispatchers.Default)
+
+4.в interface PostRepository меняю LiveDate на Flow (kotlin.coroutines.flow)
+val data: Flow<List<Post>>
+
+5.В class PostViewMode возмникает ошибка в map. Нужно добавить asLiveData()
+val data: LiveData<FeedModel> = repository.data.map(::FeedModel).asLiveData(Dispatchers.Default)
+иначе бдет конфликт с FeedModel
+
+6. перехожу interface PostRepository и делаю новую функцию для получения информации, сколько постов не прочитано
+
+7.В репозитории  PostRepositoryImpl оверайдю метод и делаю бесконечный цикл для опроса сервера
+  //метод и бесконечный цикл для опроса сервера
+     override fun getNewerCount(firstId: Long): Flow<Int> = flow {
+         try {
+             while (true) {
+                 //копирую из getAll но изменяю getAll на getNewer(firstId)
+                 val response = PostsApi.service.getNewer(firstId)
+                 if (!response.isSuccessful) {
+                     throw ApiError(response.code(), response.message())
+                 }
+                 val body = response.body() ?: throw ApiError(response.code(), response.message())
+                 postDao.insert(body.toEntity())
+                 //передаем значение в поток. Благодаря этому внешний код сможет получит переданное
+                 // через emit() в поток значение и использовать его.
+                 //Будем получать количество непрочитанных постов с сервера
+                 emit(body.size)
+                 delay(10_000L)
+             }
+             //во время сетевого запроса или паузы  delay(10_000L) поток flow может быть отменен
+             //и будет выбрашено исключение catch(e:CancellationException). Выдеялем "отмену" в это отдельное
+             //исклюяение, что бы было понятно, что не ошибка
+         } catch (e: CancellationException) {
+             throw e
+         } catch (e: IOException) {
+             throw NetworkException
+         } catch (e: Exception) {
+             throw UnknownException
+         }
+     }
+
+8. В class PostViewModel
+ //делаю подписку на функцию списка непрочитанных постов
+    val newerCount: LiveData<Int> = data.switchMap {
+        repository.getNewerCount(it.posts.firstOrNull()?.id ?: 0L)
+            .asLiveData(Dispatchers.Default)
+    }
+
+9. делаяю подписку в FeedFragment
+ //подписываюсь на поток
+        viewModel.newerCount.observe(viewLifecycleOwner){
+            //будем выводит информацию в консоль, сколько постов имеется
+            //TODO ДЗ оторажение сделать в домашней работе
+            println("Newer count: $it")
+        }
+10. В build.gradle(app) меняю Id на id телефона, а не эмулятора, так как он тормозит. Беру id от екущего подключения
+//доступ к телефону по id
+            buildConfigField "String", "BASE_URL", '"https://192.168.1.105:9999"'
+            вместо buildConfigField "String", "BASE_URL", '"https://10.0.2.2:9999"'
+
+11.Изменяем исключения на
+sealed class AppError(var code: String) : RuntimeException() {
+    companion object {
+        fun from(e: Throwable): AppError = when (e) {
+            is AppError -> e
+            is SQLException -> DbError
+            is IOException -> NetworkError
+            else -> UnknownError
+        }
+    }
+}
+
+class ApiError(val status: Int, code: String) : AppError(code)
+object NetworkError : AppError("error_network")
+object DbError : AppError("error_db")
+object UnknownError : AppError("error_unknown")
+
+
+
